@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rafael Bragança Oliveira | Portfolio</title>
+  <meta name="description" content="Portfolio of Rafael Bragança Oliveira - Computer Science Student @ ETH Zürich">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230D0A09'/%3E%3Crect x='2' y='2' width='60' height='60' rx='14' fill='none' stroke='%23792823' stroke-width='3'/%3E%3Ctext x='32' y='44' font-family='sans-serif' font-size='32' font-weight='bold' fill='%23FFFFFF' text-anchor='middle'%3ER%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="nav-glass-pill">
+      <ul class="nav-links">
+        <li><a href="#experience" class="exposure">Experience</a></li>
+        <li><a href="#projects" class="exposure">Projects</a></li>
+        <li><a href="#contact" class="exposure">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <section class="hero-section" id="hero">
+    <!-- WebGL Dither Shader Canvas Background -->
+    <canvas id="dither-canvas"></canvas>
+    
+    <!-- Dark gradient overlay for text legibility -->
+    <div class="hero-overlay"></div>
+
+    <!-- Centered Title & Subtitle -->
+    <div class="hero-content">
+      <h1 class="hero-title exposure">Rafael Braganca Oliveira</h1>
+      <p class="hero-subtitle exposure">Computer Science @ ETH Zurich</p>
+    </div>
+  </section>
+
+  <!-- SECTION BELOW HERO (DARK EARTHY RED BACKGROUND - VERTICAL EXPERIENCE TIMELINE) -->
+  <section class="earthy-red-section" id="experience">
+    <!-- Sculpted Curved Divider from Hero to Experience -->
+    <div class="section-divider-top">
+      <svg viewBox="0 0 1440 120" fill="none" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 120C320 30 720 0 1440 80V120H0Z" fill="#792823"/>
+      </svg>
+    </div>
+
+    <div class="section-container">
+      <span class="section-tag exposure">01 / Experience & Research</span>
+      <h2 class="section-heading exposure">
+        Journey in AI Engineering, Research & Leadership.
+      </h2>
+
+      <!-- Vertical Timeline Component (Reverse Chronological Order - Most Recent First) -->
+      <div class="vertical-timeline">
+        <div class="timeline-line"></div>
+
+        <!-- Item 1: Bachelor Thesis ETH Zürich (Mar 2026 – Sept 2026) -->
+        <div class="timeline-item">
+          <div class="timeline-node"></div>
+          <div class="timeline-content">
+            <div class="timeline-header">
+              <span class="timeline-date exposure">Mar 2026 – Sept 2026</span>
+              <span class="timeline-location gt-standard">Zurich, Switzerland</span>
+            </div>
+            <h3 class="timeline-title exposure">Bachelor Thesis — Federated Neural Architecture Search</h3>
+            <h4 class="timeline-company gt-standard">Distributed Computing Group, ETH Zürich (Supervisors: Prof. Roger Wattenhofer, Antonio Di Maio)</h4>
+            <ul class="timeline-bullets gt-standard">
+              <li>Developed a communication-aware federated learning method training elastic neural networks over bandwidth-constrained mobile devices, restoring ~80% lost accuracy.</li>
+              <li>Engineered a trace-driven bandwidth simulator & transmission protocol over a nested supernet (PyTorch, SLURM cluster).</li>
+            </ul>
+            <div class="timeline-tags gt-standard">
+              <span class="pill">PyTorch</span>
+              <span class="pill">SLURM Cluster</span>
+              <span class="pill">Federated Learning</span>
+              <span class="pill">NAS</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 2: GenAI Lab TUM (Oct 2025 – Mar 2026) -->
+        <div class="timeline-item">
+          <div class="timeline-node"></div>
+          <div class="timeline-content">
+            <div class="timeline-header">
+              <span class="timeline-date exposure">Oct 2025 – Mar 2026</span>
+              <span class="timeline-location gt-standard">Munich, Germany</span>
+            </div>
+            <h3 class="timeline-title exposure">AI & Full Stack Software Engineer</h3>
+            <h4 class="timeline-company gt-standard">GenAI Lab, Technical University of Munich (TUM)</h4>
+            <ul class="timeline-bullets gt-standard">
+              <li>Built <strong>PersonaAI</strong>, an open-source full-stack AI content pipeline platform for social media as a research artifact.</li>
+              <li>Orchestrated multi-agent sub-agent workflows via Supabase and AI APIs, reducing manual production time by 80%+.</li>
+              <li>Designed modular AI orchestration pipelines using n8n and LangGraph, coordinating LLMs and image generation models.</li>
+            </ul>
+            <div class="timeline-tags gt-standard">
+              <span class="pill">LangGraph</span>
+              <span class="pill">n8n</span>
+              <span class="pill">Supabase</span>
+              <span class="pill">LLMs</span>
+              <span class="pill">Python</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 3: Leadership & Clubs (Sep 2025 – Present) -->
+        <div class="timeline-item">
+          <div class="timeline-node"></div>
+          <div class="timeline-content">
+            <div class="timeline-header">
+              <span class="timeline-date exposure">Sep 2025 – Present</span>
+              <span class="timeline-location gt-standard">Zurich, Switzerland</span>
+            </div>
+            <h3 class="timeline-title exposure">Leadership & Tech Community</h3>
+            <h4 class="timeline-company gt-standard">ETH Blockchain Club • Claude Builder Club Zürich • BRASA Zurich</h4>
+            <ul class="timeline-bullets gt-standard">
+              <li><strong>ETH Blockchain Club</strong> (Board Member, Head of Marketing): Partnered with Ethereum Foundation, Solana Foundation, ChainSecurity, & Dialectic.</li>
+              <li><strong>Claude Builder Club Zürich</strong> (Board Member, Technical Track): Leading developer workshops.</li>
+              <li><strong>BRASA Zurich</strong> (Co-Founder & Board Member): Brazilian Student Association in Zurich.</li>
+            </ul>
+            <div class="timeline-tags gt-standard">
+              <span class="pill">Solidity</span>
+              <span class="pill">Ethereum Foundation</span>
+              <span class="pill">Solana</span>
+              <span class="pill">Claude AI</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Item 4: MundoAI (Jul 2023 – Present) -->
+        <div class="timeline-item">
+          <div class="timeline-node"></div>
+          <div class="timeline-content">
+            <div class="timeline-header">
+              <span class="timeline-date exposure">Jul 2023 – Present</span>
+              <span class="timeline-location gt-standard">Remote</span>
+            </div>
+            <h3 class="timeline-title exposure">Founder & AI Content Engineer</h3>
+            <h4 class="timeline-company gt-standard">MundoAI — Independent AI Creator Project</h4>
+            <ul class="timeline-bullets gt-standard">
+              <li>Built and scaled an AI-automated content platform to <strong>200K+ followers, 7M+ likes, and 60M+ views</strong> on TikTok.</li>
+              <li>Engineered end-to-end automation pipelines for AI-generated images, videos, and interactive media.</li>
+            </ul>
+            <div class="timeline-tags gt-standard">
+              <span class="pill">AI Automation</span>
+              <span class="pill">Content Engines</span>
+              <span class="pill">Media Pipelines</span>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- end vertical-timeline -->
+
+    </div><!-- end section-container -->
+  </section><!-- end earthy-red-section -->
+
+  <!-- PROJECTS SECTION (DARK EARTHY ELEGANCE DESIGN SYSTEM) -->
+  <section class="projects-section" id="projects">
+    <!-- Sculpted Wave Divider from Experience to Projects -->
+    <div class="section-divider-top">
+      <svg viewBox="0 0 1440 120" fill="none" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M0 0C480 90 960 90 1440 10V120H0V0Z" fill="#0d0a09"/>
+      </svg>
+    </div>
+
+    <div class="section-container">
+      <span class="section-tag exposure">02 / Selected Works & Research</span>
+      <h2 class="section-heading exposure">
+        Featured Projects & Systems.
+      </h2>
+
+      <!-- Earthy Borderless Projects Layout -->
+      <div class="earthy-projects-grid">
+
+        <!-- Project 1: Jasmin (Featured with Real Screenshot) -->
+        <article class="earthy-project-card card-featured">
+          <a href="https://github.com/RafaelBraganca1006/jasmin" target="_blank" rel="noopener noreferrer" class="earthy-image-container">
+            <div class="browser-header">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="browser-url">https://jasmin.ai</span>
+            </div>
+            <img src="/jasmin.png" alt="Jasmin AI Clinical Assistant Interface" class="earthy-project-img" />
+          </a>
+          <div class="earthy-card-body">
+            <div class="project-badges gt-standard">
+              <span class="project-badge highlight-badge">Top 8 Finalist @ Cognition AI</span>
+              <span class="project-badge">1,000+ Participants</span>
+            </div>
+            <h3 class="project-title exposure">
+              <a href="https://github.com/RafaelBraganca1006/jasmin" target="_blank" rel="noopener noreferrer">
+                Jasmin <span class="arrow-icon">↗</span>
+              </a>
+            </h3>
+            <p class="project-desc gt-standard">
+              Selected as 1 of 8 finalists out of 1,000+ developers in Laura Dubugras' Coding Club in collaboration with Cognition (creators of Devin & Windsurf). Judged by Henrique Vaz (Co-founder & CPO of Enter, Brazil's first AI unicorn) and Mônica Saggioro (Maya Capital).
+            </p>
+            <div class="project-footer-row">
+              <div class="project-tags gt-standard">
+                <span class="pill">Cognition AI</span>
+                <span class="pill">Devin Stack</span>
+                <span class="pill">Python</span>
+                <span class="pill">LLM Agents</span>
+              </div>
+              <a href="https://github.com/RafaelBraganca1006/jasmin" target="_blank" rel="noopener noreferrer" class="view-project-btn gt-standard">
+                View Repository ↗
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project 2: PersonaAI (Featured with Real Screenshot) -->
+        <article class="earthy-project-card card-featured">
+          <a href="https://github.com/RafaelBraganca1006/influenceos" target="_blank" rel="noopener noreferrer" class="earthy-image-container">
+            <div class="browser-header">
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="dot"></span>
+              <span class="browser-url">https://personaai.dev</span>
+            </div>
+            <img src="/persona.png" alt="PersonaAI Multi-Agent Social Media Platform" class="earthy-project-img" />
+          </a>
+          <div class="earthy-card-body">
+            <div class="project-badges gt-standard">
+              <span class="project-badge">GenAI Lab @ TUM</span>
+              <span class="project-badge">Open-Source</span>
+            </div>
+            <h3 class="project-title exposure">
+              <a href="https://github.com/RafaelBraganca1006/influenceos" target="_blank" rel="noopener noreferrer">
+                PersonaAI <span class="arrow-icon">↗</span>
+              </a>
+            </h3>
+            <p class="project-desc gt-standard">
+              Full-stack AI content pipeline platform for social media. Facilitated multi-agent sub-agent workflows via Supabase, LangGraph, and n8n, reducing manual production time by 80%+.
+            </p>
+            <div class="project-footer-row">
+              <div class="project-tags gt-standard">
+                <span class="pill">LangGraph</span>
+                <span class="pill">n8n</span>
+                <span class="pill">Supabase</span>
+                <span class="pill">Multi-Agent</span>
+              </div>
+              <a href="https://github.com/RafaelBraganca1006/influenceos" target="_blank" rel="noopener noreferrer" class="view-project-btn gt-standard">
+                View Repository ↗
+              </a>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project 3: Bachelor Thesis (TEXT ONLY - NO IMAGE, NO PLACEHOLDER) -->
+        <article class="earthy-project-card text-only-card">
+          <div class="earthy-card-body">
+            <div class="project-badges gt-standard">
+              <span class="project-badge">ETH Zürich Research</span>
+              <span class="project-badge">Distributed Computing</span>
+            </div>
+            <h3 class="project-title exposure">Bachelor Thesis — Federated NAS</h3>
+            <p class="project-desc gt-standard">
+              Communication-aware federated learning method training elastic neural networks over mobile devices with fluctuating real-world bandwidth, restoring ~80% lost accuracy (PyTorch, SLURM cluster).
+            </p>
+            <div class="project-footer-row">
+              <div class="project-tags gt-standard">
+                <span class="pill">PyTorch</span>
+                <span class="pill">SLURM Cluster</span>
+                <span class="pill">Federated Learning</span>
+                <span class="pill">Supernet</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project 4: MundoAI (TEXT ONLY - NO IMAGE, NO PLACEHOLDER) -->
+        <article class="earthy-project-card text-only-card">
+          <div class="earthy-card-body">
+            <div class="project-badges gt-standard">
+              <span class="project-badge highlight-badge">200K+ Followers</span>
+              <span class="project-badge">60M+ TikTok Views</span>
+            </div>
+            <h3 class="project-title exposure">MundoAI</h3>
+            <p class="project-desc gt-standard">
+              Fully AI-automated content platform built and scaled to 200K+ followers, 7M+ likes, and 60M+ views on TikTok with end-to-end video and interactive media automation pipelines.
+            </p>
+            <div class="project-footer-row">
+              <div class="project-tags gt-standard">
+                <span class="pill">AI Content Engine</span>
+                <span class="pill">Automation Pipelines</span>
+                <span class="pill">TikTok Growth</span>
+              </div>
+            </div>
+          </div>
+        </article>
+
+      </div>
+
+    </div>
+  </section>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
