@@ -1036,14 +1036,13 @@ html, body {
     display: none !important;
   }
 
-  /* 2. Hero Section (Slightly reduced height so top red curve hint peeks at screen bottom) */
+  /* 2. Hero Section (Sticky Pinned for Experience Slide Overlap) */
   .hero-section {
-    position: relative !important;
-    top: auto !important;
-    height: calc(100vh - 45px) !important;
-    min-height: 520px !important;
+    position: sticky !important;
+    top: 0 !important;
+    height: 100vh !important;
     padding: 4.5rem 1.25rem 2rem 1.25rem !important;
-    overflow: visible !important;
+    overflow: hidden !important;
   }
   .hero-profile-wrapper {
     flex-direction: column;
@@ -1086,27 +1085,12 @@ html, body {
     height: 50px;
   }
 
-  /* 4. Experience Timeline Section (Red Convex Arch Peeking into Bottom of Hero) */
+  /* 4. Experience Timeline Section (Sliding over Sticky Hero) */
   .earthy-red-section {
     padding: 4rem 1.25rem 6rem 1.25rem;
     position: relative !important;
     z-index: 15 !important;
-    margin-top: 0 !important;
-  }
-  .earthy-red-section .section-divider-top {
-    position: absolute !important;
-    top: -48px !important;
-    left: 0 !important;
-    width: 100vw !important;
-    height: 50px !important;
-    z-index: 20 !important;
-    overflow: visible !important;
-    pointer-events: none;
-  }
-  .earthy-red-section .section-divider-top svg {
-    height: 50px !important;
-    width: 100% !important;
-    display: block !important;
+    box-shadow: 0 -35px 70px rgba(0, 0, 0, 0.85);
   }
 
   .vertical-timeline {
