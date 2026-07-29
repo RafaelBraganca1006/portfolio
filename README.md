@@ -1,7 +1,7 @@
 # Rafael Bragança Oliveira — Personal Portfolio
 
-[![Deploy with Vercel](https://vercel.com/button)](https://rafaelbraganca.vercel.app)
-**Live Demo:** [https://rafaelbraganca.vercel.app](https://rafaelbraganca.vercel.app)
+[![Deploy with Vercel](https://vercel.com/button)](https://rafael-braganca.vercel.app)
+**Live Demo:** [https://rafael-braganca.vercel.app](https://rafael-braganca.vercel.app)
 
 Personal portfolio website for **Rafael Bragança Oliveira**, B.Sc. Computer Science student at **ETH Zürich** and exchange alumnus at the **Technical University of Munich (TUM)**.
 
@@ -49,7 +49,7 @@ npm run build
 
 ## 🔗 Contact & Links
 
-- **Website**: [https://rafaelbraganca.vercel.app](https://rafaelbraganca.vercel.app)
+- **Website**: [https://rafael-braganca.vercel.app](https://rafael-braganca.vercel.app)
 - **LinkedIn**: [linkedin.com/in/rafael-bragança-oliveira-9a624b1bb](https://www.linkedin.com/in/rafael-bragan%C3%A7a-oliveira-9a624b1bb/)
 - **GitHub**: [github.com/RafaelBraganca1006](https://github.com/RafaelBraganca1006)
 - **Email**: [rbraganca@ethz.ch](mailto:rbraganca@ethz.ch)
