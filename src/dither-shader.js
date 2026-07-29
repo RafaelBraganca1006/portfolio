@@ -79,8 +79,8 @@ const fsSource = `
         float scale = screenRatio.x / imageRatio.x;
         uv.y = (uv.y - 0.5) / scale + 0.5;
       } else {
-        float scale = screenRatio.y / imageRatio.y;
-        uv.x = (uv.x - 0.5) * scale + 0.5;
+        float scale = imageRatio.x / screenRatio.x;
+        uv.x = (uv.x - 0.5) / scale + 0.5;
       }
     }
 
