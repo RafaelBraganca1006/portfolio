@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // Parallax Scroll Reveal Effect (Section 2 sliding over Section 1 with 3D Depth Stack)
+  // Parallax Scroll Reveal Effect (Experience sliding over Hero)
   const heroSection = document.getElementById('hero');
   if (heroSection) {
     window.addEventListener('scroll', () => {
@@ -73,6 +73,30 @@ document.addEventListener('DOMContentLoaded', () => {
         
         heroSection.style.transform = `translate3d(0, ${translateY.toFixed(1)}px, 0) scale(${scale.toFixed(3)})`;
         heroSection.style.opacity = opacity.toFixed(2);
+      }
+    }, { passive: true });
+  }
+
+  // Parallax Slide-Over Stack Effect (Projects section sliding over About section)
+  const aboutSection = document.getElementById('about');
+  const projectsSection = document.getElementById('projects');
+
+  if (aboutSection && projectsSection) {
+    window.addEventListener('scroll', () => {
+      const projectsRect = projectsSection.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+
+      if (projectsRect.top <= windowHeight && projectsRect.top >= 0) {
+        const progress = (windowHeight - projectsRect.top) / windowHeight;
+        const scale = 1 - progress * 0.06;
+        const opacity = 1 - progress * 0.5;
+        const translateY = (windowHeight - projectsRect.top) * 0.25;
+
+        aboutSection.style.transform = `translate3d(0, ${translateY.toFixed(1)}px, 0) scale(${scale.toFixed(3)})`;
+        aboutSection.style.opacity = opacity.toFixed(2);
+      } else if (projectsRect.top > windowHeight) {
+        aboutSection.style.transform = 'translate3d(0, 0, 0) scale(1)';
+        aboutSection.style.opacity = '1';
       }
     }, { passive: true });
   }

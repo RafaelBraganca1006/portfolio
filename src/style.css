@@ -373,14 +373,14 @@ html, body {
   transform: none;
 }
 
-/* SECTION BELOW HERO: DARK EARTHY RED BACKGROUND (PARALLAX REVEAL) */
+/* SECTION BELOW HERO (DARK EARTHY RED BACKGROUND - VERTICAL EXPERIENCE TIMELINE) */
 .earthy-red-section {
   position: relative;
   width: 100vw;
   min-height: 100vh;
   background-color: var(--color-earthy-red);
   color: var(--color-light);
-  padding: 8rem 3.5rem 6rem 3.5rem;
+  padding: 8rem 3.5rem 10rem 3.5rem;
   z-index: 10;
   display: flex;
   flex-direction: column;
@@ -417,6 +417,7 @@ html, body {
 .vertical-timeline {
   position: relative;
   margin-top: 3rem;
+  margin-bottom: 4rem;
   padding-left: 2.2rem;
 }
 
@@ -482,61 +483,53 @@ html, body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
   flex-wrap: wrap;
   gap: 0.5rem;
 }
 
 .timeline-date {
   font-size: 0.8rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: #ffffff;
-  opacity: 0.9;
-  font-weight: 500;
+  letter-spacing: 0.06em;
+  opacity: 0.8;
 }
 
 .timeline-location {
   font-size: 0.78rem;
-  opacity: 0.7;
-  letter-spacing: 0.05em;
+  opacity: 0.6;
 }
 
 .timeline-title {
   font-size: 1.2rem;
   font-weight: 400;
-  color: #ffffff;
+  line-height: 1.25;
   margin-bottom: 0.25rem;
-  letter-spacing: -0.01em;
+  color: var(--color-light);
 }
 
 .timeline-company {
-  font-size: 0.85rem;
-  opacity: 0.8;
-  margin-bottom: 0.9rem;
-  font-weight: 300;
+  font-size: 0.84rem;
+  color: rgba(246, 238, 227, 0.75);
+  margin-bottom: 0.8rem;
+  font-weight: 400;
 }
 
 .timeline-bullets {
-  list-style: none;
-  margin-bottom: 1.1rem;
+  list-style-type: disc;
+  padding-left: 1.2rem;
+  margin-bottom: 1rem;
 }
 
 .timeline-bullets li {
-  position: relative;
-  padding-left: 1.1rem;
-  margin-bottom: 0.45rem;
   font-size: 0.84rem;
   line-height: 1.55;
-  opacity: 0.88;
-  font-weight: 300;
+  color: rgba(246, 238, 227, 0.85);
+  margin-bottom: 0.35rem;
 }
 
-.timeline-bullets li::before {
-  content: '•';
-  position: absolute;
-  left: 0;
-  color: rgba(246, 238, 227, 0.6);
+.timeline-bullets strong {
+  color: #ffffff;
+  font-weight: 500;
 }
 
 .timeline-tags {
@@ -545,9 +538,15 @@ html, body {
   gap: 0.45rem;
 }
 
-.timeline-tags .pill {
+.pill {
+  display: inline-block;
   font-size: 0.7rem;
-  padding: 0.2rem 0.65rem;
+  padding: 0.22rem 0.65rem;
+  border-radius: 20px;
+  background: rgba(246, 238, 227, 0.08);
+  border: 1px solid rgba(246, 238, 227, 0.15);
+  color: rgba(246, 238, 227, 0.9);
+  letter-spacing: 0.05em;
 }
 
 .color-palette-showcase {
@@ -598,14 +597,17 @@ html, body {
   letter-spacing: 0.05em;
 }
 
-/* DEDICATED ABOUT SECTION (DARK MODE EDITORIAL LAYOUT) */
+/* DEDICATED ABOUT SECTION (STICKY PINNED FOR SLIDE OVERLAP) */
 .about-section {
-  position: relative;
+  position: sticky;
+  top: 0;
   width: 100vw;
+  min-height: 100vh;
   background-color: #16110f;
   color: var(--color-light);
   padding: 6rem 3.5rem 6rem 3.5rem;
   z-index: 12;
+  will-change: transform, opacity;
 }
 
 .about-section .section-title {
@@ -687,14 +689,16 @@ html, body {
   color: #ffffff;
 }
 
-/* PROJECTS SECTION STYLES (CLEAN FLAT SECTION) */
+/* PROJECTS SECTION STYLES (EARTHY RED THEME - MATCHING EXPERIENCE SECTION) */
 .projects-section {
   position: relative;
   width: 100vw;
-  background-color: var(--color-dark);
+  min-height: 100vh;
+  background-color: var(--color-earthy-red);
   color: var(--color-light);
   padding: 6rem 3.5rem;
   z-index: 15;
+  box-shadow: 0 -35px 70px rgba(0, 0, 0, 0.85);
 }
 
 .earthy-projects-grid {
@@ -707,32 +711,34 @@ html, body {
 .earthy-project-card {
   position: relative;
   grid-column: span 6;
-  background: rgba(22, 17, 15, 0.5);
-  border: none;
+  background: rgba(13, 10, 9, 0.35);
+  border: 1px solid rgba(246, 238, 227, 0.12);
   border-radius: 16px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   backdrop-filter: blur(12px);
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.4s ease, box-shadow 0.4s ease;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
 }
 
 .earthy-project-card.card-featured {
   grid-column: span 12;
   flex-direction: row;
   align-items: stretch;
-  background: linear-gradient(135deg, rgba(121, 40, 35, 0.22) 0%, rgba(18, 14, 12, 0.7) 100%);
-  border: none;
+  background: rgba(13, 10, 9, 0.35);
+  border: 1px solid rgba(246, 238, 227, 0.12);
 }
 
 .earthy-project-card.text-only-card {
   grid-column: span 6;
-  background: rgba(22, 17, 15, 0.4);
+  background: rgba(13, 10, 9, 0.35);
+  border: 1px solid rgba(246, 238, 227, 0.12);
 }
 
 .earthy-project-card:hover {
   transform: translateY(-3px);
-  background: rgba(26, 20, 18, 0.75);
+  background: rgba(13, 10, 9, 0.55);
+  border-color: rgba(246, 238, 227, 0.3);
   box-shadow: 0 14px 35px rgba(0, 0, 0, 0.6);
 }
 
@@ -748,35 +754,10 @@ html, body {
   background: #120e0c;
 }
 
-.browser-header {
-  height: 28px;
-  background: rgba(13, 10, 9, 0.85);
-  border-bottom: 1px solid rgba(246, 238, 227, 0.08);
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  padding: 0 10px;
-}
-
-.browser-header .dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: rgba(246, 238, 227, 0.2);
-}
-
-.browser-url {
-  font-family: var(--font-gt-standard);
-  font-size: 0.64rem;
-  letter-spacing: 0.05em;
-  color: rgba(246, 238, 227, 0.5);
-  margin-left: 6px;
-}
-
 .earthy-project-img {
   width: 100%;
-  height: calc(100% - 28px);
-  min-height: 180px;
+  height: 100%;
+  min-height: 210px;
   object-fit: cover;
   object-position: top left;
   display: block;
