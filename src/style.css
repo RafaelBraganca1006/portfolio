@@ -778,6 +778,133 @@ html, body {
   flex-grow: 1;
 }
 
+/* SITE FOOTER STYLES */
+.site-footer {
+  position: relative;
+  width: 100vw;
+  background-color: var(--color-dark);
+  color: var(--color-light);
+  padding: 6rem 3.5rem 3rem 3.5rem;
+  z-index: 20;
+}
+
+.footer-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+}
+
+.footer-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 4rem;
+}
+
+.footer-brand-col {
+  flex: 1 1 55%;
+  max-width: 580px;
+}
+
+.footer-title {
+  font-size: 1.8rem;
+  color: #ffffff;
+  margin-bottom: 0.75rem;
+}
+
+.footer-tagline {
+  font-size: 0.88rem;
+  line-height: 1.65;
+  color: rgba(246, 238, 227, 0.75);
+  margin-bottom: 1.2rem;
+  font-weight: 300;
+}
+
+.footer-tagline strong {
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.footer-location {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.76rem;
+  color: rgba(246, 238, 227, 0.6);
+  background: rgba(246, 238, 227, 0.05);
+  border: 1px solid rgba(246, 238, 227, 0.1);
+  padding: 0.35rem 0.85rem;
+  border-radius: 20px;
+}
+
+.location-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #22c55e;
+}
+
+.footer-links-col {
+  flex: 1 1 38%;
+  max-width: 360px;
+}
+
+.footer-group-title {
+  font-family: var(--font-exposure);
+  font-size: 0.74rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(246, 238, 227, 0.5);
+  margin-bottom: 1.2rem;
+}
+
+.footer-contact-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.footer-contact-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.86rem;
+  color: rgba(246, 238, 227, 0.85);
+  padding: 0.65rem 1rem;
+  background: rgba(246, 238, 227, 0.04);
+  border: 1px solid rgba(246, 238, 227, 0.09);
+  border-radius: 10px;
+  transition: all 0.25s ease;
+  text-decoration: none;
+}
+
+.footer-contact-item:hover {
+  background: rgba(246, 238, 227, 0.1);
+  border-color: rgba(246, 238, 227, 0.25);
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.footer-bottom-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(246, 238, 227, 0.08);
+  font-size: 0.75rem;
+  color: rgba(246, 238, 227, 0.45);
+}
+
+.footer-links-row a {
+  color: rgba(246, 238, 227, 0.6);
+  text-decoration: underline;
+  transition: color 0.2s ease;
+}
+
+.footer-links-row a:hover {
+  color: #ffffff;
+}
+
 .project-badges {
   display: flex;
   flex-wrap: wrap;
