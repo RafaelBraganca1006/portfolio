@@ -76,26 +76,4 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     }, { passive: true });
   }
-
-  // Parallax Slide-Over Stack Effect (Projects section sliding over About section with 3D depth)
-  const aboutSection = document.getElementById('about');
-  const projectsSection = document.getElementById('projects');
-
-  if (aboutSection && projectsSection) {
-    window.addEventListener('scroll', () => {
-      const projectsRect = projectsSection.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-
-      if (projectsRect.top < windowHeight && projectsRect.top > 0) {
-        const progress = 1 - (projectsRect.top / windowHeight);
-        const scale = 1 - progress * 0.05;
-        const opacity = 1 - progress * 0.4;
-        aboutSection.style.transform = `scale(${scale.toFixed(3)})`;
-        aboutSection.style.opacity = opacity.toFixed(2);
-      } else if (projectsRect.top >= windowHeight) {
-        aboutSection.style.transform = 'scale(1)';
-        aboutSection.style.opacity = '1';
-      }
-    }, { passive: true });
-  }
 });

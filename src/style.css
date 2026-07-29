@@ -598,18 +598,14 @@ html, body {
   letter-spacing: 0.05em;
 }
 
-/* DEDICATED ABOUT SECTION (STICKY SLIDE-OVER DEPTH STACK) */
+/* DEDICATED ABOUT SECTION (CLEAN FLAT EDITORIAL LAYOUT) */
 .about-section {
-  position: sticky;
-  top: 0;
+  position: relative;
   width: 100vw;
-  min-height: 100vh;
   background-color: #16110f;
   color: var(--color-light);
   padding: 6rem 3.5rem 6rem 3.5rem;
-  z-index: 14;
-  box-shadow: 0 -25px 50px rgba(0, 0, 0, 0.85);
-  will-change: transform, opacity;
+  z-index: 12;
 }
 
 .about-layout-grid {
@@ -687,16 +683,14 @@ html, body {
   color: #ffffff;
 }
 
-/* PROJECTS SECTION STYLES (SLIDE-OVER LAYER OVER ABOUT) */
+/* PROJECTS SECTION STYLES (CLEAN FLAT SECTION) */
 .projects-section {
   position: relative;
   width: 100vw;
-  min-height: 100vh;
   background-color: var(--color-dark);
   color: var(--color-light);
   padding: 6rem 3.5rem;
-  z-index: 20;
-  box-shadow: 0 -45px 85px rgba(0, 0, 0, 0.95);
+  z-index: 15;
 }
 
 .earthy-projects-grid {
