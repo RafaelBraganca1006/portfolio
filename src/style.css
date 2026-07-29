@@ -1029,30 +1029,21 @@ html, body {
 
 /* COMPREHENSIVE MOBILE STYLES (MAX-WIDTH: 768PX) */
 @media (max-width: 768px) {
-  /* 1. Header Navigation Glass Pill */
+  /* 1. Hide Header Navigation Bar Completely on Mobile */
+  .navbar,
+  .nav-glass-pill,
   .main-header {
-    padding: 0.6rem 0;
-  }
-  .nav-glass-pill {
-    max-width: 92vw;
-    padding: 0.4rem 0.85rem;
-    gap: 0.5rem;
-  }
-  .header-name {
-    font-size: 0.78rem;
-    letter-spacing: -0.01em;
-  }
-  .nav-links {
-    gap: 0.2rem;
-  }
-  .nav-link {
-    font-size: 0.68rem;
-    padding: 0.25rem 0.55rem;
+    display: none !important;
   }
 
-  /* 2. Hero Section & Typography */
+  /* 2. Hero Section (Slightly reduced height so top red curve hint peeks at screen bottom) */
   .hero-section {
-    padding: 6.5rem 1.25rem 3.5rem 1.25rem;
+    position: relative !important;
+    top: auto !important;
+    height: calc(100vh - 45px) !important;
+    min-height: 520px !important;
+    padding: 4.5rem 1.25rem 2rem 1.25rem !important;
+    overflow: visible !important;
   }
   .hero-profile-wrapper {
     flex-direction: column;
@@ -1088,34 +1079,63 @@ html, body {
 
   /* 3. Proportional SVG Dividers on Mobile */
   .section-divider-top {
-    height: 48px;
-    top: -47px;
+    height: 50px;
+    top: -49px;
   }
   .section-divider-top svg {
-    height: 48px;
+    height: 50px;
   }
 
-  /* 4. Experience Timeline Section */
+  /* 4. Experience Timeline Section (Red Convex Arch Peeking into Bottom of Hero) */
   .earthy-red-section {
     padding: 4rem 1.25rem 6rem 1.25rem;
+    position: relative !important;
+    z-index: 15 !important;
+    margin-top: 0 !important;
   }
+  .earthy-red-section .section-divider-top {
+    position: absolute !important;
+    top: -48px !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 50px !important;
+    z-index: 20 !important;
+    overflow: visible !important;
+    pointer-events: none;
+  }
+  .earthy-red-section .section-divider-top svg {
+    height: 50px !important;
+    width: 100% !important;
+    display: block !important;
+  }
+
   .vertical-timeline {
     margin-top: 2rem;
     margin-bottom: 2rem;
-    padding-left: 0;
+    padding-left: 1.8rem;
   }
   .vertical-timeline::before {
-    left: 12px;
+    left: 5px;
+  }
+  .timeline-item {
+    position: relative;
+    margin-bottom: 2rem;
   }
   .timeline-node {
-    padding-left: 2rem;
-    margin-bottom: 2.2rem;
-  }
-  .timeline-marker {
-    left: 6px;
-    top: 0.2rem;
-    width: 13px;
-    height: 13px;
+    position: absolute;
+    top: 14px;
+    left: -1.85rem;
+    width: 12px;
+    height: 12px;
+    min-width: 12px;
+    min-height: 12px;
+    max-width: 12px;
+    max-height: 12px;
+    border-radius: 50%;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-sizing: border-box;
+    flex-shrink: 0;
   }
   .timeline-card {
     padding: 1.2rem 1.1rem;
@@ -1132,8 +1152,13 @@ html, body {
     line-height: 1.6;
   }
 
-  /* 5. About Section */
+  /* 5. About Section (Standard Flow on Mobile - Desktop Keeps Sticky Overlap) */
   .about-section {
+    position: relative !important;
+    top: auto !important;
+    transform: none !important;
+    opacity: 1 !important;
+    min-height: auto !important;
     padding: 4rem 1.25rem;
   }
   .about-layout-grid {
@@ -1156,8 +1181,10 @@ html, body {
     padding: 1rem 1.1rem;
   }
 
-  /* 6. Projects Section */
+  /* 6. Projects Section (Standard Flow on Mobile) */
   .projects-section {
+    position: relative !important;
+    margin-top: 0 !important;
     padding: 4rem 1.25rem;
   }
   .section-heading {
