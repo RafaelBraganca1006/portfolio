@@ -83,6 +83,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (aboutSection && projectsSection) {
     window.addEventListener('scroll', () => {
+      // Disable parallax scale transform on mobile screens (keep sticky overlap for desktop only)
+      if (window.innerWidth <= 768) {
+        aboutSection.style.transform = 'none';
+        aboutSection.style.opacity = '1';
+        return;
+      }
+
       const projectsRect = projectsSection.getBoundingClientRect();
       const windowHeight = window.innerHeight;
 

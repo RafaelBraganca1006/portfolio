@@ -1029,14 +1029,18 @@ html, body {
 
 /* COMPREHENSIVE MOBILE STYLES (MAX-WIDTH: 768PX) */
 @media (max-width: 768px) {
-  /* 1. Hide Header Navigation on Mobile */
+  /* 1. Hide Header Navigation Bar Completely on Mobile */
+  .navbar,
+  .nav-glass-pill,
   .main-header {
     display: none !important;
   }
 
-  /* 2. Hero Section & Typography */
+  /* 2. Hero Section & Bottom Convex Curve Hint */
   .hero-section {
-    padding: 4.5rem 1.25rem 3.5rem 1.25rem;
+    padding: 5rem 1.25rem 4rem 1.25rem;
+    height: calc(100vh - 35px);
+    min-height: 540px;
   }
   .hero-profile-wrapper {
     flex-direction: column;
@@ -1082,6 +1086,8 @@ html, body {
   /* 4. Experience Timeline Section */
   .earthy-red-section {
     padding: 4rem 1.25rem 6rem 1.25rem;
+    position: relative;
+    z-index: 10;
   }
   .vertical-timeline {
     margin-top: 2rem;
@@ -1132,8 +1138,13 @@ html, body {
     line-height: 1.6;
   }
 
-  /* 5. About Section */
+  /* 5. About Section (Standard Flow on Mobile - No Sticky Overlap) */
   .about-section {
+    position: relative !important;
+    top: auto !important;
+    transform: none !important;
+    opacity: 1 !important;
+    min-height: auto !important;
     padding: 4rem 1.25rem;
   }
   .about-layout-grid {
@@ -1156,8 +1167,12 @@ html, body {
     padding: 1rem 1.1rem;
   }
 
-  /* 6. Projects Section */
+  /* 6. Projects Section (Standard Flow on Mobile) */
   .projects-section {
+    position: relative !important;
+    margin-top: 0 !important;
+    padding: 4rem 1.25rem;
+  }
     padding: 4rem 1.25rem;
   }
   .section-heading {
