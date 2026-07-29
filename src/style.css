@@ -351,6 +351,17 @@ html, body {
   display: block;
 }
 
+.diagonal-sweep-divider {
+  height: 120px;
+  top: -119px;
+}
+
+.diagonal-sweep-divider svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
 /* SCROLL REVEAL MICRO-ANIMATIONS */
 .scroll-reveal {
   opacity: 1;
