@@ -189,6 +189,44 @@ html, body {
   text-align: center;
 }
 
+/* Hero Social Links */
+.hero-social-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1.8rem;
+  flex-wrap: wrap;
+}
+
+.social-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.45rem 1.1rem;
+  border-radius: 30px;
+  background: rgba(246, 238, 227, 0.12);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.social-icon-btn:hover {
+  background: rgba(246, 238, 227, 0.28);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+.social-icon-btn svg {
+  color: #ffffff;
+}
+
 .profile-square-container {
   position: relative;
   width: clamp(240px, 22vw, 300px);
@@ -544,6 +582,111 @@ html, body {
   letter-spacing: 0.05em;
 }
 
+/* DEDICATED ABOUT SECTION (TWO-COLUMN REFERENCE MATCH) */
+.about-section {
+  position: relative;
+  width: 100vw;
+  background-color: #16110f;
+  color: var(--color-light);
+  padding: 5rem 3.5rem 5rem 3.5rem;
+  z-index: 14;
+  box-shadow: 0 -25px 50px rgba(0, 0, 0, 0.85);
+}
+
+.about-layout-grid {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 4rem;
+}
+
+.about-bio-column {
+  flex: 1 1 58%;
+  max-width: 620px;
+}
+
+.about-text-p {
+  font-size: 0.88rem;
+  line-height: 1.68;
+  color: rgba(246, 238, 227, 0.86);
+  font-weight: 300;
+  margin-bottom: 1.25rem;
+}
+
+.about-text-p strong {
+  color: #ffffff;
+  font-weight: 500;
+}
+
+.external-inline-link {
+  color: #ffffff;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  transition: opacity 0.2s ease;
+}
+
+.external-inline-link:hover {
+  opacity: 0.8;
+}
+
+.about-pill-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  margin-top: 1.8rem;
+}
+
+.about-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.76rem;
+  padding: 0.4rem 0.95rem;
+  border-radius: 12px;
+  background: rgba(246, 238, 227, 0.05);
+  border: 1px solid rgba(246, 238, 227, 0.12);
+  color: rgba(246, 238, 227, 0.9);
+}
+
+.about-skills-column {
+  flex: 1 1 38%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.skill-group-block {
+  background: rgba(13, 10, 9, 0.45);
+  border: 1px solid rgba(246, 238, 227, 0.08);
+  border-radius: 14px;
+  padding: 1.1rem 1.4rem;
+}
+
+.skill-group-title {
+  font-family: var(--font-exposure);
+  font-size: 0.74rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: rgba(246, 238, 227, 0.6);
+  margin-bottom: 0.75rem;
+}
+
+.skill-tags-flex {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.skill-card-tag {
+  font-size: 0.72rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 8px;
+  background: rgba(246, 238, 227, 0.06);
+  border: 1px solid rgba(246, 238, 227, 0.12);
+  color: #ffffff;
+}
+
 /* PROJECTS SECTION STYLES (EARTHY DESIGN SYSTEM VIBE - BORDERLESS) */
 .projects-section {
   position: relative;
@@ -766,6 +909,15 @@ html, body {
   }
 }
 @media (max-width: 900px) {
+  .about-layout-grid {
+    flex-direction: column;
+    gap: 3rem;
+  }
+  .about-bio-column,
+  .about-skills-column {
+    max-width: 100%;
+    width: 100%;
+  }
   .projects-grid {
     grid-template-columns: 1fr;
   }
