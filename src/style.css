@@ -1036,11 +1036,14 @@ html, body {
     display: none !important;
   }
 
-  /* 2. Hero Section & Bottom Convex Curve Hint */
+  /* 2. Hero Section & Bottom Convex Curve Hint (Mobile Screen) */
   .hero-section {
-    padding: 5rem 1.25rem 4rem 1.25rem;
-    height: calc(100vh - 35px);
-    min-height: 540px;
+    position: relative !important;
+    top: auto !important;
+    height: auto !important;
+    min-height: calc(100vh - 60px) !important;
+    padding: 4.5rem 1.25rem 3.5rem 1.25rem !important;
+    overflow: visible !important;
   }
   .hero-profile-wrapper {
     flex-direction: column;
@@ -1074,20 +1077,35 @@ html, body {
     padding: 0.45rem 0.85rem;
   }
 
-  /* 3. Proportional SVG Dividers on Mobile */
+  /* 3. Proportional SVG Dividers on Mobile (Convex Arch Peeking at Hero Bottom) */
   .section-divider-top {
-    height: 48px;
-    top: -47px;
+    height: 55px;
+    top: -54px;
   }
   .section-divider-top svg {
-    height: 48px;
+    height: 55px;
   }
 
-  /* 4. Experience Timeline Section */
+  /* 4. Experience Timeline Section (Red Convex Arch Peeking into Hero) */
   .earthy-red-section {
     padding: 4rem 1.25rem 6rem 1.25rem;
-    position: relative;
-    z-index: 10;
+    position: relative !important;
+    z-index: 20 !important;
+  }
+  .earthy-red-section .section-divider-top {
+    position: absolute !important;
+    top: -65px !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 70px !important;
+    z-index: 25 !important;
+    overflow: visible !important;
+    pointer-events: none;
+  }
+  .earthy-red-section .section-divider-top svg {
+    height: 70px !important;
+    width: 100% !important;
+    display: block !important;
   }
   .vertical-timeline {
     margin-top: 2rem;
