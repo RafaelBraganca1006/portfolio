@@ -65,20 +65,20 @@ html, body {
 }
 
 .nav-glass-pill {
-  background: rgba(13, 10, 9, 0.78);
+  background: rgba(246, 238, 227, 0.18);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  border: 1px solid rgba(246, 238, 227, 0.28);
+  border: 1px solid rgba(255, 255, 255, 0.35);
   border-radius: 50px;
   padding: 0.65rem 2.2rem;
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.1);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.3), inset 0 0 0 1px rgba(255, 255, 255, 0.2);
   transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .nav-glass-pill:hover {
-  background: rgba(13, 10, 9, 0.9);
-  border-color: rgba(255, 255, 255, 0.5);
-  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.65), 0 0 20px rgba(255, 255, 255, 0.15);
+  background: rgba(246, 238, 227, 0.32);
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.4), 0 0 20px rgba(255, 255, 255, 0.2);
   transform: translateY(-2px);
 }
 
@@ -598,15 +598,18 @@ html, body {
   letter-spacing: 0.05em;
 }
 
-/* DEDICATED ABOUT SECTION (TWO-COLUMN REFERENCE MATCH) */
+/* DEDICATED ABOUT SECTION (STICKY SLIDE-OVER DEPTH STACK) */
 .about-section {
-  position: relative;
+  position: sticky;
+  top: 0;
   width: 100vw;
+  min-height: 100vh;
   background-color: #16110f;
   color: var(--color-light);
-  padding: 5rem 3.5rem 5rem 3.5rem;
+  padding: 6rem 3.5rem 6rem 3.5rem;
   z-index: 14;
   box-shadow: 0 -25px 50px rgba(0, 0, 0, 0.85);
+  will-change: transform, opacity;
 }
 
 .about-layout-grid {
@@ -643,25 +646,6 @@ html, body {
 
 .external-inline-link:hover {
   opacity: 0.8;
-}
-
-.about-pill-badges {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.65rem;
-  margin-top: 1.8rem;
-}
-
-.about-pill-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  font-size: 0.76rem;
-  padding: 0.4rem 0.95rem;
-  border-radius: 12px;
-  background: rgba(246, 238, 227, 0.05);
-  border: 1px solid rgba(246, 238, 227, 0.12);
-  color: rgba(246, 238, 227, 0.9);
 }
 
 .about-skills-column {
@@ -703,16 +687,16 @@ html, body {
   color: #ffffff;
 }
 
-/* PROJECTS SECTION STYLES (EARTHY DESIGN SYSTEM VIBE - BORDERLESS) */
+/* PROJECTS SECTION STYLES (SLIDE-OVER LAYER OVER ABOUT) */
 .projects-section {
   position: relative;
   width: 100vw;
   min-height: 100vh;
   background-color: var(--color-dark);
   color: var(--color-light);
-  padding: 5rem 3.5rem;
-  z-index: 15;
-  box-shadow: 0 -30px 60px rgba(0, 0, 0, 0.9);
+  padding: 6rem 3.5rem;
+  z-index: 20;
+  box-shadow: 0 -45px 85px rgba(0, 0, 0, 0.95);
 }
 
 .earthy-projects-grid {
