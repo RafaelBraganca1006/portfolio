@@ -696,7 +696,7 @@ html, body {
   min-height: 100vh;
   background-color: var(--color-earthy-red);
   color: var(--color-light);
-  padding: 6rem 3.5rem;
+  padding: 6rem 3.5rem 10rem 3.5rem;
   z-index: 15;
   box-shadow: 0 -35px 70px rgba(0, 0, 0, 0.85);
 }
@@ -706,6 +706,7 @@ html, body {
   grid-template-columns: repeat(12, 1fr);
   gap: 1.5rem;
   margin-top: 2.5rem;
+  margin-bottom: 4rem;
 }
 
 .earthy-project-card {
@@ -1169,7 +1170,7 @@ html, body {
   .projects-section {
     position: relative !important;
     margin-top: 0 !important;
-    padding: 4rem 1.25rem;
+    padding: 4rem 1.25rem 7rem 1.25rem !important;
   }
   .section-heading {
     font-size: 1.8rem;
@@ -1177,6 +1178,7 @@ html, body {
   .earthy-projects-grid {
     grid-template-columns: 1fr;
     gap: 1.5rem;
+    margin-bottom: 3rem;
   }
   .earthy-project-card.card-featured,
   .earthy-project-card.text-only-card {
