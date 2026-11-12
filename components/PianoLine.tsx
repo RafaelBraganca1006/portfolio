@@ -371,7 +371,7 @@ export default function PianoLine({
                 {playing ? `\u25B6 ${SONGS.find((x) => x.id === playing)?.label}` : "SELECT PRESET"}
               </p>
             </div>
-            <div className="mt-3 flex items-center justify-center gap-3 sm:gap-5">
+            <div className="mt-3 flex items-center justify-center gap-2 sm:gap-5">
               {SONGS.map((sg, i) => {
                 const on = playing === sg.id;
                 return (
@@ -392,7 +392,7 @@ export default function PianoLine({
                           if (on) stopSong();
                           else void startSong(sg.id, sg.file);
                         }}
-                        className={`block h-9 w-12 rounded-[4px] border-t border-white/70 outline-none transition-all duration-75 focus-visible:ring-2 focus-visible:ring-[#ff5a3c] sm:h-10 sm:w-14 ${
+                        className={`block h-8 w-9 rounded-[4px] border-t border-white/70 outline-none transition-all duration-75 focus-visible:ring-2 focus-visible:ring-[#ff5a3c] sm:h-10 sm:w-14 ${
                           on
                             ? "translate-y-[5px] bg-[radial-gradient(ellipse_at_50%_20%,#e6dcc0_0%,#cfc19f_100%)] shadow-[0_1px_0_#7d6a42,inset_0_2px_4px_rgba(0,0,0,0.25)]"
                             : "bg-[radial-gradient(ellipse_at_50%_15%,#faf4e4_0%,#e2d6b8_60%,#d2c39f_100%)] shadow-[0_6px_0_#85714a,0_8px_5px_rgba(0,0,0,0.55),inset_0_-3px_4px_rgba(120,95,50,0.35)] hover:brightness-105"

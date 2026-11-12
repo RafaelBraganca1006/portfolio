@@ -77,16 +77,16 @@ export default function Dock() {
 
   return (
     // sits in the page flow under the intro, then sticks to the top once you scroll past it
-    <div className="pointer-events-none fixed inset-x-0 top-4 z-50 flex justify-center">
+    <div className="pointer-events-none fixed inset-x-0 top-3 z-50 flex justify-center sm:top-4">
     <nav
       aria-label="Sections"
-      className="pointer-events-auto rounded-full border border-line bg-bg/70 p-1.5 shadow-[0_10px_30px_-12px_rgba(0,0,0,0.45)] backdrop-blur-xl"
+      className="pointer-events-auto rounded-full border border-line bg-bg/70 p-1 shadow sm:p-1.5-[0_10px_30px_-12px_rgba(0,0,0,0.45)] backdrop-blur-xl"
     >
-      <ul className="flex items-center gap-1">
+      <ul className="flex items-center gap-0.5 sm:gap-1">
         {items.map((i) => {
           const home = i.id === "home";
           const on = home ? active === null : active === i.id;
-          const cls = `flex h-11 w-11 items-center justify-center rounded-full transition duration-300 ${
+          const cls = `flex h-[38px] w-[38px] items-center sm:h-11 sm:w-11 justify-center rounded-full transition duration-300 ${
             on ? "bg-surface text-fg shadow-[0_2px_10px_rgba(0,0,0,0.25)]" : "text-muted hover:text-fg"
           }`;
           const svg = (
@@ -116,7 +116,7 @@ export default function Dock() {
             type="button"
             aria-label="Piano"
             onClick={() => window.dispatchEvent(new Event("open-piano"))}
-            className="flex h-11 w-11 items-center justify-center rounded-full text-muted transition duration-300 hover:text-fg"
+            className="flex h-[38px] w-[38px] items-center sm:h-11 sm:w-11 justify-center rounded-full text-muted transition duration-300 hover:text-fg"
           >
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
               <rect x="3" y="5.5" width="18" height="13.5" rx="2.2" />

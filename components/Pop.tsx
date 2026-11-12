@@ -41,7 +41,7 @@ export default function Pop({ id, variant = "details", href, mark, children }: P
   // keep the window inside the viewport horizontally
   const fit = () => {
     const el = card.current;
-    if (!el) return;
+    if (!el || window.innerWidth < 640) return;
     el.style.marginLeft = "0px";
     const r = el.getBoundingClientRect();
     const m = 16;
@@ -67,7 +67,7 @@ export default function Pop({ id, variant = "details", href, mark, children }: P
     );
   }
 
-  const width = variant === "preview" ? "w-[min(22rem,calc(100vw-2rem))]" : "w-[min(28rem,calc(100vw-2rem))]";
+  const width = variant === "preview" ? "sm:w-[22rem]" : "sm:w-[28rem]";
 
   return (
     <span
@@ -97,7 +97,7 @@ export default function Pop({ id, variant = "details", href, mark, children }: P
       <span
         ref={card}
         role="tooltip"
-        className={`pointer-events-none invisible absolute left-0 top-full z-30 block ${width} translate-y-1 pt-2 text-left font-sans text-base font-normal normal-case leading-normal tracking-normal opacity-0 transition duration-200 group-hover/pop:pointer-events-auto group-hover/pop:visible group-hover/pop:translate-y-0 group-hover/pop:opacity-100 group-focus-within/pop:pointer-events-auto group-focus-within/pop:visible group-focus-within/pop:translate-y-0 group-focus-within/pop:opacity-100 ${pinned ? "pointer-events-auto visible translate-y-0 opacity-100" : ""}`}
+        className={`pointer-events-none invisible fixed inset-x-4 top-auto z-30 block sm:absolute sm:inset-x-auto sm:left-0 sm:top-full ${width} translate-y-1 pt-2 text-left font-sans text-base font-normal normal-case leading-normal tracking-normal opacity-0 transition duration-200 group-hover/pop:pointer-events-auto group-hover/pop:visible group-hover/pop:translate-y-0 group-hover/pop:opacity-100 group-focus-within/pop:pointer-events-auto group-focus-within/pop:visible group-focus-within/pop:translate-y-0 group-focus-within/pop:opacity-100 ${pinned ? "pointer-events-auto visible translate-y-0 opacity-100" : ""}`}
       >
         <span className="block overflow-hidden rounded-2xl border border-line bg-surface shadow-[0_28px_60px_-24px_rgba(0,0,0,0.6)]">
           {variant === "preview" && job.preview ? (

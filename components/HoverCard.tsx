@@ -17,7 +17,7 @@ export default function BmwHoverCard({ children }: { children: React.ReactNode }
       {/* pt bridges the gap so the card stays open while the pointer moves onto it */}
       <span
         role="tooltip"
-        className="pointer-events-none invisible absolute bottom-full left-1/2 z-40 w-[min(19rem,80vw)] -translate-x-1/2 translate-y-1 pb-3 opacity-0 transition duration-200 group-hover/card:pointer-events-auto group-hover/card:visible group-hover/card:translate-y-0 group-hover/card:opacity-100 group-focus-within/card:pointer-events-auto group-focus-within/card:visible group-focus-within/card:translate-y-0 group-focus-within/card:opacity-100"
+        className="pointer-events-none invisible absolute bottom-full left-1/2 z-40 w-[min(19rem,80vw)] -translate-x-1/2 translate-y-1 pb-3 max-sm:fixed max-sm:inset-x-4 max-sm:bottom-auto max-sm:left-4 max-sm:top-auto max-sm:w-auto max-sm:translate-x-0 max-sm:pb-0 max-sm:pt-2 opacity-0 transition duration-200 group-hover/card:pointer-events-auto group-hover/card:visible group-hover/card:translate-y-0 group-hover/card:opacity-100 group-focus-within/card:pointer-events-auto group-focus-within/card:visible group-focus-within/card:translate-y-0 group-focus-within/card:opacity-100"
       >
         <a
           href="#exp-bmw"

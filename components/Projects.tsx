@@ -31,6 +31,7 @@ export default function Projects() {
 
             <h3 className="mt-5 font-display text-2xl leading-tight text-fg">{p.title}</h3>
             <p className="mt-1.5 max-w-md text-[15px] leading-relaxed text-fg/70">{p.desc}</p>
+            <p className="mt-2 hidden max-w-md text-[13px] leading-relaxed text-muted [@media(hover:none)]:block">{p.tech}</p>
             <p className="mt-3 flex gap-5 text-sm">
               {p.links.map((l) => (
                 <a
