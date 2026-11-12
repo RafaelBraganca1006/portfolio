@@ -234,7 +234,10 @@ export const projects: Project[] = [
     desc: "Forecasts hospital bed occupancy in São Paulo and simulates policy scenarios.",
     image: "/projects/intelisus.jpg",
     alt: "InteliSUS: a map of hospital bed occupancy in São Paulo state",
-    links: [{ label: "Code", href: "https://github.com/RafaelBraganca1006/intelisus" }],
+    links: [
+      { label: "Site", href: "https://intelisus-rafaelbraganca1006s-projects.vercel.app" },
+      { label: "Code", href: "https://github.com/RafaelBraganca1006/intelisus" },
+    ],
   },
   {
     title: "Apuração 2026",
@@ -242,7 +245,10 @@ export const projects: Project[] = [
     desc: "A live city-by-city map of Brazil's 2026 runoff, on official TSE data.",
     image: "/projects/apuracao.jpg",
     alt: "Apuração 2026: Lula versus Flávio, the live map of the runoff",
-    links: [{ label: "Code", href: "https://github.com/RafaelBraganca1006/apuracao-2026" }],
+    links: [
+      { label: "Site", href: "https://apuracao-2026.brlabs.workers.dev" },
+      { label: "Code", href: "https://github.com/RafaelBraganca1006/apuracao-2026" },
+    ],
   },
   {
     title: "PersonaAI",
