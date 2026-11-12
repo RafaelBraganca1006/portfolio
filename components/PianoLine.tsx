@@ -36,23 +36,42 @@ function usePiano() {
   const loading = useRef<Promise<void> | null>(null);
   const voices = useRef<Map<number, Voice>>(new Map());
 
+  // Creates and unlocks the audio context (must run inside a user gesture, which Safari and iOS insist on)
+  // and loads the samples once. A failed sample never blocks the others, and a failed load can be retried.
   const ready = useCallback(() => {
     if (!ctx.current) {
       const AC = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
       ctx.current = new AC();
+      try {
+        const silent = ctx.current.createBufferSource();
+        silent.buffer = ctx.current.createBuffer(1, 1, 22050);
+        silent.connect(ctx.current.destination);
+        silent.start(0);
+      } catch {}
     }
-    if (ctx.current.state === "suspended") void ctx.current.resume();
+    const c = ctx.current;
+    if (c.state !== "running") void c.resume().catch(() => {});
     if (!loading.current) {
-      const c = ctx.current;
       loading.current = Promise.all(
         Object.entries(ROOTS).map(async ([name, midi]) => {
-          const res = await fetch(`/audio/piano/${name}.mp3`);
-          bufs.current[midi] = await c.decodeAudioData(await res.arrayBuffer());
+          try {
+            const res = await fetch(`/audio/piano/${name}.mp3`);
+            const data = await res.arrayBuffer();
+            // callback form works on every Safari, the promise form only on newer ones
+            bufs.current[midi] = await new Promise<AudioBuffer>((ok, fail) => c.decodeAudioData(data, ok, fail));
+          } catch {}
         }),
-      ).then(() => undefined);
+      ).then(() => {
+        if (Object.keys(bufs.current).length === 0) loading.current = null;
+      });
     }
     return loading.current;
   }, []);
+
+  const nearest = (midi: number) => {
+    const have = Object.keys(bufs.current).map(Number);
+    return have.reduce((a, b) => (Math.abs(b - midi) < Math.abs(a - midi) ? b : a), have[0]);
+  };
 
   const stop = useCallback((midi: number) => {
     const v = voices.current.get(midi);
@@ -71,8 +90,8 @@ function usePiano() {
       await ready();
       const c = ctx.current!;
       if (voices.current.has(midi)) stop(midi);
-      const roots = Object.values(ROOTS);
-      const root = roots.reduce((a, b) => (Math.abs(b - midi) < Math.abs(a - midi) ? b : a));
+      if (Object.keys(bufs.current).length === 0) return;
+      const root = nearest(midi);
       const src = c.createBufferSource();
       src.buffer = bufs.current[root];
       src.playbackRate.value = Math.pow(2, (midi - root) / 12);
@@ -87,8 +106,7 @@ function usePiano() {
 
   const schedule = useCallback((midi: number, at: number, off: number, vel: number, dest: AudioNode) => {
     const c = ctx.current!;
-    const roots = Object.values(ROOTS);
-    const root = roots.reduce((a, b) => (Math.abs(b - midi) < Math.abs(a - midi) ? b : a));
+    const root = nearest(midi);
     const src = c.createBufferSource();
     src.buffer = bufs.current[root];
     src.playbackRate.value = Math.pow(2, (midi - root) / 12);
@@ -209,6 +227,18 @@ export default function PianoLine({
   );
 
   useEffect(() => () => song.current?.stop(), []);
+
+  // unlock audio on the very first touch, click or key anywhere on the page, so the piano is ready when it opens
+  useEffect(() => {
+    const unlock = () => {
+      void ready();
+      for (const ev of ["pointerdown", "touchend", "click", "keydown"]) window.removeEventListener(ev, unlock);
+    };
+    for (const ev of ["pointerdown", "touchend", "click", "keydown"]) window.addEventListener(ev, unlock, { passive: true });
+    return () => {
+      for (const ev of ["pointerdown", "touchend", "click", "keydown"]) window.removeEventListener(ev, unlock);
+    };
+  }, [ready]);
 
   useEffect(() => {
     const onOpen = () => {
