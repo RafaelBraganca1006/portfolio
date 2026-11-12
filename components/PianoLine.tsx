@@ -383,8 +383,7 @@ export default function PianoLine({
                     <span className="block rounded-[7px] bg-[#24160c] p-[3px] shadow-[inset_0_3px_5px_rgba(0,0,0,0.9),0_1px_0_rgba(255,255,255,0.45)]">
                       <button
                         type="button"
-                        tabIndex={open ? 0 : -1}
-                        aria-label={`Preset ${i + 1}`}
+                                                aria-label={`Preset ${i + 1}`}
                         aria-pressed={on}
                         onClick={() => {
                           void ready();
@@ -411,10 +410,9 @@ export default function PianoLine({
                 <button
                   key={m}
                   type="button"
-                  tabIndex={open ? 0 : -1}
-                  aria-label={`Note ${m}`}
+                                    aria-label={`Note ${m}`}
                   {...handlers(m)}
-                  className={`h-full flex-1 rounded-b-md border-x border-black/25 transition-colors duration-100 ${
+                  className={`h-full flex-1 outline-none rounded-b-md border-x border-black/25 transition-colors duration-100 ${
                     down.has(m) ? "bg-[#d8cfbf]" : "bg-[linear-gradient(180deg,#f7f2e6_0%,#efe8d8_100%)] hover:bg-[#ece7dc]"
                   }`}
                 />
@@ -427,7 +425,7 @@ export default function PianoLine({
                   aria-label={`Note ${midi}`}
                   {...handlers(midi)}
                   style={{ left: `${(after / WHITES) * 100}%`, width: `${(0.6 / WHITES) * 100}%`, transform: "translateX(-50%)" }}
-                  className={`absolute top-0 h-[62%] rounded-b-md shadow-[0_4px_6px_rgba(0,0,0,0.5)] transition-colors duration-100 ${
+                  className={`absolute top-0 h-[62%] outline-none rounded-b-md shadow-[0_4px_6px_rgba(0,0,0,0.5)] transition-colors duration-100 ${
                     down.has(midi) ? "bg-[#4a4f5c]" : "bg-[linear-gradient(180deg,#2c2f37_0%,#14161b_100%)] hover:bg-[#2f333d]"
                   }`}
                 />
