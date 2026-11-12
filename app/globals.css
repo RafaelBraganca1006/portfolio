@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Exposure";
+  src: url("/Exposure.otf") format("opentype");
+  font-display: swap;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --font-display: "Exposure", ui-serif, Georgia, serif;
+  --font-sans: var(--font-geist), ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+  --bg: #07090d;
+  --surface: #0d1118;
+  --fg: #e8e8e6;
+  --muted: #8a919c;
+  --line: rgb(255 255 255 / 0.08);
+  --accent: #9bb5d6;
+  --sel: rgb(155 181 214 / 0.3);
+  color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+  --bg: #f7f5f0;
+  --surface: #ffffff;
+  --fg: #17191e;
+  --muted: #6f747d;
+  --line: rgb(0 0 0 / 0.09);
+  --accent: #2f5fa8;
+  --sel: rgb(47 95 168 / 0.2);
+  color-scheme: light;
+}
+
+html {
+  overflow-x: clip;
+  scroll-behavior: smooth;
+  background: var(--bg);
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--sel);
+}
