@@ -77,7 +77,19 @@ export default function Pop({ id, variant = "details", href, mark, children }: P
       onFocus={fit}
     >
       {href ? (
-        <a href={href} target="_blank" rel="noopener noreferrer" className={triggerClass}>
+        <a
+          href={href}
+          target="_blank"
+          rel="noopener noreferrer"
+          className={triggerClass}
+          onClick={(e) => {
+            // on touch screens there is no hover: first tap shows the card, whose link then opens it
+            if (window.matchMedia("(hover: none)").matches) {
+              e.preventDefault();
+              setPinned((p) => !p);
+            }
+          }}
+        >
           {inner}
         </a>
       ) : (
