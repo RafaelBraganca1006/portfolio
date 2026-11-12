@@ -26,14 +26,14 @@ export default function Pop({ id, variant = "details", href, mark, children }: P
 
   useEffect(() => {
     if (!pinned) return;
-    const down = (e: MouseEvent) => {
+    const down = (e: Event) => {
       if (!root.current?.contains(e.target as Node)) setPinned(false);
     };
     const key = (e: KeyboardEvent) => e.key === "Escape" && setPinned(false);
-    document.addEventListener("mousedown", down);
+    document.addEventListener("pointerdown", down as EventListener);
     document.addEventListener("keydown", key);
     return () => {
-      document.removeEventListener("mousedown", down);
+      document.removeEventListener("pointerdown", down as EventListener);
       document.removeEventListener("keydown", key);
     };
   }, [pinned]);
@@ -97,7 +97,7 @@ export default function Pop({ id, variant = "details", href, mark, children }: P
       <span
         ref={card}
         role="tooltip"
-        className={`pointer-events-none invisible fixed inset-x-4 top-auto z-30 block sm:absolute sm:inset-x-auto sm:left-0 sm:top-full ${width} translate-y-1 pt-2 text-left font-sans text-base font-normal normal-case leading-normal tracking-normal opacity-0 transition duration-200 group-hover/pop:pointer-events-auto group-hover/pop:visible group-hover/pop:translate-y-0 group-hover/pop:opacity-100 group-focus-within/pop:pointer-events-auto group-focus-within/pop:visible group-focus-within/pop:translate-y-0 group-focus-within/pop:opacity-100 ${pinned ? "pointer-events-auto visible translate-y-0 opacity-100" : ""}`}
+        className={`pointer-events-none invisible fixed inset-x-4 bottom-4 top-auto z-[60] block max-h-[75svh] overflow-y-auto sm:absolute sm:bottom-auto sm:max-h-none sm:overflow-visible sm:inset-x-auto sm:left-0 sm:top-full ${width} translate-y-1 pt-2 text-left font-sans text-base font-normal normal-case leading-normal tracking-normal opacity-0 transition duration-200 group-hover/pop:pointer-events-auto group-hover/pop:visible group-hover/pop:translate-y-0 group-hover/pop:opacity-100 group-focus-within/pop:pointer-events-auto group-focus-within/pop:visible group-focus-within/pop:translate-y-0 group-focus-within/pop:opacity-100 ${pinned ? "pointer-events-auto visible translate-y-0 opacity-100" : ""}`}
       >
         <span className="block overflow-hidden rounded-2xl border border-line bg-surface shadow-[0_28px_60px_-24px_rgba(0,0,0,0.6)]">
           {variant === "preview" && job.preview ? (
