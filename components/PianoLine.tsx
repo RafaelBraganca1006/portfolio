@@ -52,18 +52,28 @@ function usePiano() {
     const c = ctx.current;
     if (c.state !== "running") void c.resume().catch(() => {});
     if (!loading.current) {
-      loading.current = Promise.all(
-        Object.entries(ROOTS).map(async ([name, midi]) => {
+      // fetch in parallel, decode one at a time (Safari can choke on many concurrent decodes);
+      // anything that failed is retried on the next call
+      const missing = Object.entries(ROOTS).filter(([, midi]) => !bufs.current[midi]);
+      loading.current = (async () => {
+        const raw = await Promise.all(
+          missing.map(async ([name, midi]) => {
+            try {
+              const res = await fetch(`/audio/piano/${name}.mp3`);
+              return [midi, await res.arrayBuffer()] as const;
+            } catch {
+              return [midi, null] as const;
+            }
+          }),
+        );
+        for (const [midi, data] of raw) {
+          if (!data) continue;
           try {
-            const res = await fetch(`/audio/piano/${name}.mp3`);
-            const data = await res.arrayBuffer();
-            // callback form works on every Safari, the promise form only on newer ones
             bufs.current[midi] = await new Promise<AudioBuffer>((ok, fail) => c.decodeAudioData(data, ok, fail));
           } catch {}
-        }),
-      ).then(() => {
-        if (Object.keys(bufs.current).length === 0) loading.current = null;
-      });
+        }
+        if (Object.keys(bufs.current).length < Object.keys(ROOTS).length) loading.current = null;
+      })();
     }
     return loading.current;
   }, []);
@@ -89,6 +99,7 @@ function usePiano() {
     async (midi: number) => {
       await ready();
       const c = ctx.current!;
+      if (c.state !== "running") await Promise.race([c.resume().catch(() => {}), new Promise((r) => setTimeout(r, 400))]);
       if (voices.current.has(midi)) stop(midi);
       if (Object.keys(bufs.current).length === 0) return;
       const root = nearest(midi);
@@ -228,17 +239,20 @@ export default function PianoLine({
 
   useEffect(() => () => song.current?.stop(), []);
 
-  // unlock audio on the very first touch, click or key anywhere on the page, so the piano is ready when it opens
+  // unlock audio on the first touch, click or key anywhere on the page, so the piano is ready when it opens.
+  // Safari on the Mac does not count pointerdown as a gesture, so keep listening (to click, mouseup, keydown,
+  // touchend) until the context is really running.
   useEffect(() => {
+    const events = ["pointerdown", "mousedown", "mouseup", "touchend", "click", "keydown"];
     const unlock = () => {
       void ready();
-      for (const ev of ["pointerdown", "touchend", "click", "keydown"]) window.removeEventListener(ev, unlock);
+      if (ctx.current?.state === "running") for (const ev of events) window.removeEventListener(ev, unlock);
     };
-    for (const ev of ["pointerdown", "touchend", "click", "keydown"]) window.addEventListener(ev, unlock, { passive: true });
+    for (const ev of events) window.addEventListener(ev, unlock, { passive: true });
     return () => {
-      for (const ev of ["pointerdown", "touchend", "click", "keydown"]) window.removeEventListener(ev, unlock);
+      for (const ev of events) window.removeEventListener(ev, unlock);
     };
-  }, [ready]);
+  }, [ready, ctx]);
 
   useEffect(() => {
     const onOpen = () => {
