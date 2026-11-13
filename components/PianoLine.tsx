@@ -35,6 +35,7 @@ function usePiano() {
   const bufs = useRef<Record<number, AudioBuffer>>({});
   const loading = useRef<Promise<void> | null>(null);
   const voices = useRef<Map<number, Voice>>(new Map());
+  const [loaded, setLoaded] = useState<number | null>(null); // how many samples decoded, once a load finished
 
   // Creates and unlocks the audio context (must run inside a user gesture, which Safari and iOS insist on)
   // and loads the samples once. A failed sample never blocks the others, and a failed load can be retried.
@@ -59,19 +60,29 @@ function usePiano() {
         const raw = await Promise.all(
           missing.map(async ([name, midi]) => {
             try {
-              const res = await fetch(`/audio/piano/${name}.mp3`);
-              return [midi, await res.arrayBuffer()] as const;
+              // AAC first (Safari's native format), MP3 as a fallback
+              let res = await fetch(`/audio/piano/${name}.m4a`);
+              if (!res.ok) res = await fetch(`/audio/piano/${name}.mp3`);
+              return [midi, await res.arrayBuffer(), name] as const;
             } catch {
-              return [midi, null] as const;
+              return [midi, null, name] as const;
             }
           }),
         );
-        for (const [midi, data] of raw) {
+        for (const [midi, data, name] of raw) {
           if (!data) continue;
+          const decode = (d: ArrayBuffer) => new Promise<AudioBuffer>((ok, fail) => c.decodeAudioData(d, ok, fail));
           try {
-            bufs.current[midi] = await new Promise<AudioBuffer>((ok, fail) => c.decodeAudioData(data, ok, fail));
-          } catch {}
+            bufs.current[midi] = await decode(data.slice(0));
+          } catch {
+            // the AAC file did not decode: try the MP3
+            try {
+              const res = await fetch(`/audio/piano/${name}.mp3`);
+              bufs.current[midi] = await decode(await res.arrayBuffer());
+            } catch {}
+          }
         }
+        setLoaded(Object.keys(bufs.current).length);
         if (Object.keys(bufs.current).length < Object.keys(ROOTS).length) loading.current = null;
       })();
     }
@@ -132,7 +143,7 @@ function usePiano() {
     return src;
   }, []);
 
-  return { play, stop, ready, schedule, ctx };
+  return { play, stop, ready, schedule, ctx, loaded };
 }
 
 export default function PianoLine({
@@ -147,7 +158,7 @@ export default function PianoLine({
   const [open, setOpen] = useState(false);
   const [down, setDown] = useState<Set<number>>(new Set());
   const [playing, setPlaying] = useState<string | null>(null);
-  const { play, stop, ready, schedule, ctx } = usePiano();
+  const { play, stop, ready, schedule, ctx, loaded } = usePiano();
   const song = useRef<{ stop: () => void } | null>(null);
   const cache = useRef<Record<string, Song>>({});
 
@@ -382,7 +393,7 @@ export default function PianoLine({
                 className={`${lcd.className} truncate text-2xl leading-none tracking-[0.12em] sm:text-3xl ${playing ? "text-[#b9f26b] [text-shadow:0_0_8px_rgba(185,242,107,0.7)]" : "text-[#b9f26b]/35"}`}
                 aria-live="polite"
               >
-                {playing ? `\u25B6 ${SONGS.find((x) => x.id === playing)?.label}` : "SELECT PRESET"}
+                {playing ? `\u25B6 ${SONGS.find((x) => x.id === playing)?.label}` : loaded === 0 ? "SOUND ERROR" : "SELECT PRESET"}
               </p>
             </div>
             <div className="mt-3 flex items-center justify-center gap-2 sm:gap-5">
