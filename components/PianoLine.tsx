@@ -40,6 +40,11 @@ function usePiano() {
   // Creates and unlocks the audio context (must run inside a user gesture, which Safari and iOS insist on)
   // and loads the samples once. A failed sample never blocks the others, and a failed load can be retried.
   const ready = useCallback(() => {
+    // iOS mutes Web Audio when the ringer switch is on silent, unless the page declares itself as "playback"
+    try {
+      const nav = navigator as unknown as { audioSession?: { type: string } };
+      if (nav.audioSession) nav.audioSession.type = "playback";
+    } catch {}
     if (!ctx.current) {
       const AC = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
       ctx.current = new AC();
@@ -256,12 +261,17 @@ export default function PianoLine({
   useEffect(() => {
     const events = ["pointerdown", "mousedown", "mouseup", "touchend", "click", "keydown"];
     const unlock = () => {
+      // keep listening forever: iOS suspends/interrupts the context after lock screen, calls or tab switches
       void ready();
-      if (ctx.current?.state === "running") for (const ev of events) window.removeEventListener(ev, unlock);
     };
+    const visible = () => {
+      if (document.visibilityState === "visible" && ctx.current && ctx.current.state !== "running") void ctx.current.resume().catch(() => {});
+    };
+    document.addEventListener("visibilitychange", visible);
     for (const ev of events) window.addEventListener(ev, unlock, { passive: true });
     return () => {
       for (const ev of events) window.removeEventListener(ev, unlock);
+      document.removeEventListener("visibilitychange", visible);
     };
   }, [ready, ctx]);
 
