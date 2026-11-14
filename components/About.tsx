@@ -1,5 +1,6 @@
 import Section from "./Section";
 import PianoLine from "./PianoLine";
+import PhotoPop from "./PhotoPop";
 
 const B = ({ children }: { children: React.ReactNode }) => (
   <strong className="font-medium text-fg">{children}</strong>
@@ -35,7 +36,7 @@ export default function About() {
         <PianoLine
           before={<>Outside of computer science and academia, I am deeply passionate about music and sports. I have been playing the </>}
           trigger="piano for over 15 years"
-          after={<>, with a focus on Classical music and Jazz, and I am a big football fan and die-hard supporter of <B>Corinthians</B>.</>}
+          after={<>, with a focus on Classical music and Jazz, and I am a big football fan and die-hard supporter of{" "}<PhotoPop icon="/photos/kid-corinthians-icon.jpg" photo="/photos/kid-corinthians.jpg" alt="Rafael as a kid in a Corinthians jersey, foot on a ball">Corinthians</PhotoPop>.</>}
         />
       </div>
     </Section>
