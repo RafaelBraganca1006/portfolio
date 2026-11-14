@@ -72,7 +72,7 @@ export default function PhotoPop({ icon, photo, alt, children }: Props) {
       <span
         ref={card}
         role="tooltip"
-        className={`pointer-events-none invisible fixed inset-x-4 bottom-4 top-auto z-[60] mx-auto block max-h-[80svh] w-[min(18rem,calc(100vw-2rem))] translate-y-1 pt-2 text-left opacity-0 transition duration-200 sm:absolute sm:inset-x-auto sm:bottom-auto sm:left-0 sm:top-full sm:mx-0 sm:w-[18rem] group-hover/pop:pointer-events-auto group-hover/pop:visible group-hover/pop:translate-y-0 group-hover/pop:opacity-100 group-focus-within/pop:pointer-events-auto group-focus-within/pop:visible group-focus-within/pop:translate-y-0 group-focus-within/pop:opacity-100 ${pinned ? "pointer-events-auto visible translate-y-0 opacity-100" : ""}`}
+        className={`pointer-events-none invisible fixed inset-x-4 bottom-4 top-auto z-[60] mx-auto block max-h-[80svh] w-[min(18rem,calc(100vw-2rem))] translate-y-1 pb-2 sm:translate-y-1 text-left opacity-0 transition duration-200 sm:absolute sm:inset-x-auto sm:left-0 sm:bottom-full sm:top-auto sm:mx-0 sm:w-[18rem] group-hover/pop:pointer-events-auto group-hover/pop:visible group-hover/pop:translate-y-0 group-hover/pop:opacity-100 group-focus-within/pop:pointer-events-auto group-focus-within/pop:visible group-focus-within/pop:translate-y-0 group-focus-within/pop:opacity-100 ${pinned ? "pointer-events-auto visible translate-y-0 opacity-100" : ""}`}
       >
         <span className="block overflow-hidden rounded-2xl border border-line bg-surface shadow-[0_28px_60px_-24px_rgba(0,0,0,0.6)]">
           {/* eslint-disable-next-line @next/next/no-img-element */}
