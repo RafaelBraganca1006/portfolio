@@ -67,6 +67,35 @@ export default function PhotoCluster() {
   const [open, setOpen] = useState<Open>(null);
   const [hover, setHover] = useState<string | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const wrap = useRef<HTMLDivElement>(null);
+  const [shown, setShown] = useState(false);
+
+  // entrance: the photos start stacked at the centre of the mosaic and fan out to their places (no spring, just a long ease-out)
+  useLayoutEffect(() => {
+    const box = wrap.current;
+    if (!box || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setShown(true);
+      return;
+    }
+    const b = box.getBoundingClientRect();
+    const cx = b.left + b.width / 2;
+    const cy = b.top + b.height / 2;
+    const tiles = Array.from(box.children) as HTMLElement[];
+    tiles.forEach((el, i) => {
+      const r = el.getBoundingClientRect();
+      const dx = cx - (r.left + r.width / 2);
+      const dy = cy - (r.top + r.height / 2);
+      const tilt = (((i * 37) % 11) - 5) * 1.4;
+      el.animate(
+        [
+          { opacity: 0, transform: `translate(${dx}px, ${dy}px) rotate(${tilt}deg) scale(0.55)` },
+          { opacity: 1, transform: "none" },
+        ],
+        { duration: 1100, delay: 120 + i * 55, easing: "cubic-bezier(0.22, 1, 0.36, 1)", fill: "backwards" }
+      );
+    });
+    setShown(true);
+  }, []);
 
   const rects: Record<string, Rect> = {};
   solve(TREE, NATURAL.x, NATURAL.y, NATURAL.w, NATURAL.h, hover, rects);
@@ -83,7 +112,7 @@ export default function PhotoCluster() {
 
   return (
     <>
-      <div className="relative w-full" style={{ paddingBottom: `${layout.aspect}%` }} onMouseLeave={leave}>
+      <div ref={wrap} className="relative w-full" style={{ paddingBottom: `${layout.aspect}%` }} onMouseLeave={leave}>
         {layout.items.map((it) => {
           const p = photoMeta[it.file];
           const r = rects[it.file];
@@ -102,6 +131,7 @@ export default function PhotoCluster() {
               aria-label={`Open photo: ${p.alt}`}
               className="absolute block cursor-zoom-in overflow-hidden rounded-[5px] outline-none transition-[left,top,width,height] duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]"
               style={{
+                opacity: shown ? undefined : 0,
                 left: `${r.x}%`,
                 top: `${(r.y / layout.aspect) * 100}%`,
                 width: `${r.w}%`,

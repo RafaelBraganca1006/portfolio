@@ -56,3 +56,50 @@ body {
 ::selection {
   background: var(--sel);
 }
+
+
+/* ---- hero entrance ---------------------------------------------------------------------------- */
+.hero-text { --d0: 0.85s; }
+.rv {
+  animation: rv-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  animation-delay: calc(var(--d0, 0.85s) + var(--i, 0) * 26ms);
+}
+/* opacity only, no transform/filter: safe around the BMW hover card, whose mobile sheet is position: fixed */
+.rv-soft { animation: rv-fade 0.8s ease-out backwards; animation-delay: calc(var(--d0, 0.85s) + var(--i, 0) * 26ms); }
+span.rv { display: inline-block; }
+a.ul-draw { display: inline-block; }
+.rv-pop { animation-name: rv-pop; }
+.rv-late { --d0: 0.85s; animation-name: rv-fade; animation-duration: 1s; }
+@keyframes rv-in {
+  from { opacity: 0; transform: translateY(8px); filter: blur(6px); }
+  to { opacity: 1; transform: none; filter: blur(0); }
+}
+@keyframes rv-pop {
+  from { opacity: 0; transform: scale(0.6); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes rv-fade { from { opacity: 0; } to { opacity: 1; } }
+
+/* underline that is drawn left to right after the link has appeared */
+.ul-draw {
+  text-decoration: none;
+  padding-bottom: 2px;
+  background-image: linear-gradient(color-mix(in srgb, var(--fg) 35%, transparent), color-mix(in srgb, var(--fg) 35%, transparent));
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  animation:
+    rv-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) backwards,
+    ul-draw 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation-delay:
+    calc(var(--d0, 0.85s) + var(--i, 0) * 26ms),
+    calc(var(--d0, 0.85s) + var(--i, 0) * 26ms + 0.45s);
+  transition: background-image 0.2s;
+}
+.ul-draw:hover { background-image: linear-gradient(var(--fg), var(--fg)); }
+@keyframes ul-draw { to { background-size: 100% 1px; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .rv, .rv-soft { animation: none !important; }
+  .ul-draw { animation: none !important; background-size: 100% 1px; }
+}

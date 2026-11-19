@@ -3,54 +3,87 @@ import BmwHoverCard from "./HoverCard";
 import { BmwMark, BrazilFlag, EthMark, GitHubMark, LinkedInMark, MailMark, SwissFlag } from "./InlineMark";
 import { profile } from "@/data/content";
 
-const Link = ({ href, children }: { href: string; children: React.ReactNode }) => (
-  <a
-    href={href}
-    target={href.startsWith("http") ? "_blank" : undefined}
-    rel="noopener noreferrer"
-    className="font-medium text-fg underline decoration-fg/35 underline-offset-[5px] transition hover:decoration-fg"
-  >
-    {children}
-  </a>
-);
-
-const B = ({ children }: { children: React.ReactNode }) => (
-  <strong className="font-medium text-fg">{children}</strong>
-);
+type Vars = React.CSSProperties & { "--i"?: number };
 
 export default function Hero() {
+  // every word and icon gets an index, so the text appears one piece after another (see .rv in globals.css)
+  let n = 0;
+  const idx = (): Vars => ({ "--i": n++ });
+  const W = (s: string) =>
+    s.split(/(\s+)/).map((t, k) =>
+      !t.trim() || /^[.,;:]+$/.test(t) ? (
+        t
+      ) : (
+        <span key={k} className="rv" style={idx()}>
+          {t}
+        </span>
+      )
+    );
+  const M = (mark: React.ReactNode) => (
+    <span className="rv rv-pop" style={idx()}>
+      {mark}
+    </span>
+  );
+  const B = ({ children }: { children: string }) => <strong className="font-medium text-fg">{W(children)}</strong>;
+  const Link = ({ href, children }: { href: string; children: string }) => {
+    const i = n++;
+    return (
+      <a
+        href={href}
+        target={href.startsWith("http") ? "_blank" : undefined}
+        rel="noopener noreferrer"
+        className="rv ul-draw font-medium text-fg"
+        style={{ "--i": i } as Vars}
+      >
+        {children}
+      </a>
+    );
+  };
+
   return (
     <section className="mx-auto flex min-h-svh max-w-2xl flex-col items-center px-6 pb-16 pt-24">
       <PhotoCluster />
 
-      <div className="mt-10 w-full shrink-0 text-[16px] leading-[1.7] text-muted">
-        <p className="font-display text-2xl text-fg">Hey,</p>
+      <div className="hero-text mt-10 w-full shrink-0 text-[16px] leading-[1.7] text-muted">
+        <p className="font-display text-2xl text-fg">{W("Hey,")}</p>
 
         <p className="mt-4">
-          I&apos;m <B>Rafael</B>, a <B>Computer Science</B> student at <EthMark />{" "}
-          <B>ETH Zurich</B>. Originally from <B>São Paulo, Brazil</B>{" "}
-          <BrazilFlag />, now living in <B>Zurich</B> <SwissFlag />.
+          {W("I'm ")}
+          <B>Rafael</B>
+          {W(", a ")}
+          <B>Computer Science</B>
+          {W(" student at ")}
+          {M(<EthMark />)} <B>ETH Zurich</B>
+          {W(". Originally from ")}
+          <B>São Paulo, Brazil</B> {M(<BrazilFlag />)}
+          {W(", now living in ")}
+          <B>Zurich</B> {M(<SwissFlag />)}.
         </p>
 
         <div className="mt-3">
-          Currently I work as a working student,{" "}
-          <BmwHoverCard>AI Engineer at <BmwMark /> BMW</BmwHoverCard>, on the
-          Financial Services team.
+          {W("Currently I work as a working student, ")}
+          <span className="rv-soft" style={idx()}>
+            <BmwHoverCard>
+              AI Engineer at <BmwMark /> BMW
+            </BmwHoverCard>
+          </span>
+          {W(", on the Financial Services team.")}
         </div>
 
         <p className="mt-5">
-          Reach out to me via <LinkedInMark />{" "}
-          <Link href={profile.linkedin}>LinkedIn</Link>, <MailMark />{" "}
-          <Link href={`mailto:${profile.email}`}>Email</Link> or <GitHubMark />{" "}
-          <Link href={profile.github}>GitHub</Link>.
+          {W("Reach out to me via ")}
+          {M(<LinkedInMark />)} <Link href={profile.linkedin}>LinkedIn</Link>, {M(<MailMark />)}{" "}
+          <Link href={`mailto:${profile.email}`}>Email</Link>
+          {W(" or ")}
+          {M(<GitHubMark />)} <Link href={profile.github}>GitHub</Link>.
         </p>
       </div>
-
 
       <a
         href="#experience"
         aria-label="Scroll down"
-        className="mt-auto flex shrink-0 pt-12 text-muted transition hover:text-fg"
+        className="rv rv-late mt-auto flex shrink-0 pt-12 text-muted transition hover:text-fg"
+        style={{ "--i": n + 12 } as Vars}
       >
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" className="animate-bounce">
           <path d="m6 9 6 6 6-6" />
