@@ -42,7 +42,7 @@ function bbox(n: Node): Rect {
 }
 const NATURAL = bbox(TREE);
 
-function solve(n: Node, x: number, y: number, w: number, h: number, hover: string | null, out: Record<string, Rect>) {
+function solve(n: Node, x: number, y: number, w: number, h: number, hover: string | null, out: Record<string, Rect>, grow = GROW) {
   if ("file" in n) {
     out[n.file] = { x, y, w, h };
     return;
@@ -50,15 +50,15 @@ function solve(n: Node, x: number, y: number, w: number, h: number, hover: strin
   const horizontal = n.dir === "H";
   const weights = n.kids.map((k) => {
     const b = bbox(k);
-    return (horizontal ? b.w : b.h) * (hover && has(k, hover) ? GROW : 1);
+    return (horizontal ? b.w : b.h) * (hover && has(k, hover) ? grow : 1);
   });
   const total = weights.reduce((a, b) => a + b, 0);
   const avail = (horizontal ? w : h) - GAP * (n.kids.length - 1);
   let pos = horizontal ? x : y;
   n.kids.forEach((k, i) => {
     const size = (avail * weights[i]) / total;
-    if (horizontal) solve(k, pos, y, size, h, hover, out);
-    else solve(k, x, pos, w, size, hover, out);
+    if (horizontal) solve(k, pos, y, size, h, hover, out, grow);
+    else solve(k, x, pos, w, size, hover, out, grow);
     pos += size + GAP;
   });
 }
@@ -67,38 +67,24 @@ export default function PhotoCluster() {
   const [open, setOpen] = useState<Open>(null);
   const [hover, setHover] = useState<string | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const wrap = useRef<HTMLDivElement>(null);
-  const [shown, setShown] = useState(false);
-
-  // entrance: the photos start stacked at the centre of the mosaic and fan out to their places (no spring, just a long ease-out)
-  useLayoutEffect(() => {
-    const box = wrap.current;
-    if (!box || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setShown(true);
+  // entrance: the mosaic starts squeezed around the centre portrait and slides open into place,
+  // with the same easing as the hover effect (no spring)
+  const [phase, setPhase] = useState<"pre" | "go" | "done">("pre");
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      setPhase("done");
       return;
     }
-    const b = box.getBoundingClientRect();
-    const cx = b.left + b.width / 2;
-    const cy = b.top + b.height / 2;
-    const tiles = Array.from(box.children) as HTMLElement[];
-    tiles.forEach((el, i) => {
-      const r = el.getBoundingClientRect();
-      const dx = cx - (r.left + r.width / 2);
-      const dy = cy - (r.top + r.height / 2);
-      const tilt = (((i * 37) % 11) - 5) * 1.4;
-      el.animate(
-        [
-          { opacity: 0, transform: `translate(${dx}px, ${dy}px) rotate(${tilt}deg) scale(0.55)` },
-          { opacity: 1, transform: "none" },
-        ],
-        { duration: 1100, delay: 120 + i * 55, easing: "cubic-bezier(0.22, 1, 0.36, 1)", fill: "backwards" }
-      );
-    });
-    setShown(true);
+    const raf = requestAnimationFrame(() => requestAnimationFrame(() => setPhase("go")));
+    const end = setTimeout(() => setPhase("done"), 1700);
+    return () => {
+      cancelAnimationFrame(raf);
+      clearTimeout(end);
+    };
   }, []);
 
   const rects: Record<string, Rect> = {};
-  solve(TREE, NATURAL.x, NATURAL.y, NATURAL.w, NATURAL.h, hover, rects);
+  solve(TREE, NATURAL.x, NATURAL.y, NATURAL.w, NATURAL.h, phase === "pre" ? "portrait.jpg" : hover, rects, phase === "pre" ? 14 : GROW);
 
   // a short delay so moving across the mosaic does not make it jump around
   const enter = (file: string) => {
@@ -112,8 +98,8 @@ export default function PhotoCluster() {
 
   return (
     <>
-      <div ref={wrap} className="relative w-full" style={{ paddingBottom: `${layout.aspect}%` }} onMouseLeave={leave}>
-        {layout.items.map((it) => {
+      <div className="relative w-full" style={{ paddingBottom: `${layout.aspect}%` }} onMouseLeave={leave}>
+        {layout.items.map((it, i) => {
           const p = photoMeta[it.file];
           const r = rects[it.file];
           return (
@@ -129,9 +115,11 @@ export default function PhotoCluster() {
               onFocus={() => enter(it.file)}
               onBlur={leave}
               aria-label={`Open photo: ${p.alt}`}
-              className="absolute block cursor-zoom-in overflow-hidden rounded-[5px] outline-none transition-[left,top,width,height] duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]"
+              className="absolute block cursor-zoom-in overflow-hidden rounded-[5px] outline-none transition-[left,top,width,height,opacity] duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]"
               style={{
-                opacity: shown ? undefined : 0,
+                opacity: phase === "pre" ? 0 : 1,
+                transitionDuration: phase === "done" ? undefined : "1000ms",
+                transitionDelay: phase === "go" ? `${(i % 6) * 45}ms` : undefined,
                 left: `${r.x}%`,
                 top: `${(r.y / layout.aspect) * 100}%`,
                 width: `${r.w}%`,

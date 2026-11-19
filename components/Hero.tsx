@@ -24,8 +24,8 @@ export default function Hero() {
       {mark}
     </span>
   );
-  const B = ({ children }: { children: string }) => <strong className="font-medium text-fg">{W(children)}</strong>;
-  const Link = ({ href, children }: { href: string; children: string }) => {
+  const B = (children: string) => <strong className="font-medium text-fg">{W(children)}</strong>;
+  const Link = (href: string, children: string) => {
     const i = n++;
     return (
       <a
@@ -49,15 +49,15 @@ export default function Hero() {
 
         <p className="mt-4">
           {W("I'm ")}
-          <B>Rafael</B>
+          {B("Rafael")}
           {W(", a ")}
-          <B>Computer Science</B>
+          {B("Computer Science")}
           {W(" student at ")}
-          {M(<EthMark />)} <B>ETH Zurich</B>
+          {M(<EthMark />)} {B("ETH Zurich")}
           {W(". Originally from ")}
-          <B>São Paulo, Brazil</B> {M(<BrazilFlag />)}
+          {B("São Paulo, Brazil")} {M(<BrazilFlag />)}
           {W(", now living in ")}
-          <B>Zurich</B> {M(<SwissFlag />)}.
+          {B("Zurich")} {M(<SwissFlag />)}.
         </p>
 
         <div className="mt-3">
@@ -72,10 +72,10 @@ export default function Hero() {
 
         <p className="mt-5">
           {W("Reach out to me via ")}
-          {M(<LinkedInMark />)} <Link href={profile.linkedin}>LinkedIn</Link>, {M(<MailMark />)}{" "}
-          <Link href={`mailto:${profile.email}`}>Email</Link>
+          {M(<LinkedInMark />)} {Link(profile.linkedin, "LinkedIn")}, {M(<MailMark />)}{" "}
+          {Link(`mailto:${profile.email}`, "Email")}
           {W(" or ")}
-          {M(<GitHubMark />)} <Link href={profile.github}>GitHub</Link>.
+          {M(<GitHubMark />)} {Link(profile.github, "GitHub")}.
         </p>
       </div>
 
