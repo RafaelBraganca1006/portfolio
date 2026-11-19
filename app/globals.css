@@ -59,7 +59,7 @@ body {
 
 
 /* ---- hero entrance ---------------------------------------------------------------------------- */
-.hero-text { --d0: 0.85s; }
+.hero-text { --d0: 0.35s; }
 .rv {
   animation: rv-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) backwards;
   animation-delay: calc(var(--d0, 0.85s) + var(--i, 0) * 26ms);
@@ -69,7 +69,7 @@ body {
 span.rv { display: inline-block; }
 a.ul-draw { display: inline-block; }
 .rv-pop { animation-name: rv-pop; }
-.rv-late { --d0: 0.85s; animation-name: rv-fade; animation-duration: 1s; }
+.rv-late { --d0: 0.35s; animation-name: rv-fade; animation-duration: 1s; }
 @keyframes rv-in {
   from { opacity: 0; transform: translateY(8px); filter: blur(6px); }
   to { opacity: 1; transform: none; filter: blur(0); }
@@ -102,4 +102,23 @@ a.ul-draw { display: inline-block; }
 @media (prefers-reduced-motion: reduce) {
   .rv, .rv-soft { animation: none !important; }
   .ul-draw { animation: none !important; background-size: 100% 1px; }
+}
+
+
+/* ---- intro choreography: photos first, then header + text (html[data-intro] is set in layout.tsx / PhotoCluster) ---- */
+html[data-intro="pre"] .rv,
+html[data-intro="pre"] .rv-soft { animation: none; opacity: 0; }
+html[data-intro="pre"] .dock-nav,
+html[data-intro="pre"] .theme-btn,
+html[data-intro="pre"] .mosaic { opacity: 0; visibility: hidden; }
+
+html[data-intro="show"] .dock-nav { animation: dock-grow 1s cubic-bezier(0.22, 1, 0.36, 1) backwards; }
+html[data-intro="show"] .dock-li { animation: rv-pop 0.6s cubic-bezier(0.22, 1, 0.36, 1) backwards; animation-delay: calc(0.25s + var(--k, 0) * 90ms); }
+html[data-intro="show"] .theme-btn { animation: rv-fade 0.9s ease-out 0.7s backwards; }
+@keyframes dock-grow {
+  from { clip-path: inset(-30px 100% -30px -30px); opacity: 0; }
+  to { clip-path: inset(-30px -30px -30px -30px); opacity: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .dock-nav, .dock-li, .theme-btn { animation: none !important; }
 }

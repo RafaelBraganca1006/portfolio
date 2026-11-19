@@ -22,6 +22,8 @@ const TREE: Node = {
     { dir: "V", kids: [{ file: "IMG_9738.jpg" }, { file: "IMG_0189.jpg" }] },
   ],
 };
+// order in which the photos appear around the portrait
+const REVEAL = ["portrait.jpg", "IMG_0587.jpg", "IMG_9738.jpg", "IMG_0189.jpg", "IMG_0631.jpg", "IMG_7133.jpg", "IMG_0195.jpg", "IMG_6956.jpg", "IMG_7467.jpg", "IMG_7188.jpg", "IMG_0031.jpg"];
 const GAP = 0.9; // same gap as the generated layout, in % of the mosaic width
 const GROW = 1.7; // how much more room a branch gets for the hovered photo
 
@@ -42,24 +44,27 @@ function bbox(n: Node): Rect {
 }
 const NATURAL = bbox(TREE);
 
-function solve(n: Node, x: number, y: number, w: number, h: number, hover: string | null, out: Record<string, Rect>, grow = GROW) {
+function solve(n: Node, x: number, y: number, w: number, h: number, hover: string | null, out: Record<string, Rect>, vis: Set<string> | null = null) {
   if ("file" in n) {
     out[n.file] = { x, y, w, h };
     return;
   }
   const horizontal = n.dir === "H";
-  const weights = n.kids.map((k) => {
+  // branches with no visible photo yet take no room (and no gap)
+  const live = n.kids.map((k) => !vis || [...vis].some((f) => has(k, f)));
+  const weights = n.kids.map((k, i) => {
+    if (!live[i]) return 0;
     const b = bbox(k);
-    return (horizontal ? b.w : b.h) * (hover && has(k, hover) ? grow : 1);
+    return (horizontal ? b.w : b.h) * (hover && has(k, hover) ? GROW : 1);
   });
   const total = weights.reduce((a, b) => a + b, 0);
-  const avail = (horizontal ? w : h) - GAP * (n.kids.length - 1);
+  const avail = (horizontal ? w : h) - GAP * (live.filter(Boolean).length - 1);
   let pos = horizontal ? x : y;
   n.kids.forEach((k, i) => {
     const size = (avail * weights[i]) / total;
-    if (horizontal) solve(k, pos, y, size, h, hover, out, grow);
-    else solve(k, x, pos, w, size, hover, out, grow);
-    pos += size + GAP;
+    if (horizontal) solve(k, pos, y, size, h, hover, out, vis);
+    else solve(k, x, pos, w, size, hover, out, vis);
+    if (live[i]) pos += size + GAP;
   });
 }
 
@@ -67,24 +72,46 @@ export default function PhotoCluster() {
   const [open, setOpen] = useState<Open>(null);
   const [hover, setHover] = useState<string | null>(null);
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
-  // entrance: the mosaic starts squeezed around the centre portrait and slides open into place,
-  // with the same easing as the hover effect (no spring)
-  const [phase, setPhase] = useState<"pre" | "go" | "done">("pre");
-  useEffect(() => {
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setPhase("done");
+  // Entrance (first load of the home page): your portrait alone in the middle of the screen, the other photos
+  // slide in around it one by one (same easing as the hover effect), then the finished mosaic rises to its place.
+  // Only after that do the header and the text appear (html[data-intro], see globals.css).
+  const wrap = useRef<HTMLDivElement>(null);
+  const [intro, setIntro] = useState<{ step: number; lifted: boolean; dy: number } | null>(null);
+  useLayoutEffect(() => {
+    const root = document.documentElement;
+    const box = wrap.current;
+    if (root.dataset.intro !== "pre" || !box) return;
+    if (window.scrollY > 40) {
+      root.dataset.intro = "show";
       return;
     }
-    const raf = requestAnimationFrame(() => requestAnimationFrame(() => setPhase("go")));
-    const end = setTimeout(() => setPhase("done"), 1700);
+    const r = box.getBoundingClientRect();
+    const dy = window.innerHeight / 2 - (r.top + r.height / 2);
+    const total = REVEAL.length;
+    const FIRST = 800; // the portrait is alone for a moment
+    const STEP = 420; // one new photo every STEP ms
+    const timers: ReturnType<typeof setTimeout>[] = [];
+    const at = (ms: number, fn: () => void) => timers.push(setTimeout(fn, ms));
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    setIntro({ step: 1, lifted: false, dy });
+    for (let k = 2; k <= total; k++) at(FIRST + (k - 2) * STEP, () => setIntro((v) => v && { ...v, step: k }));
+    const formed = FIRST + (total - 2) * STEP + 1100;
+    at(formed, () => setIntro((v) => v && { ...v, lifted: true })); // the mosaic rises
+    at(formed + 1000, () => {
+      root.dataset.intro = "show"; // header + text
+      document.body.style.overflow = prevOverflow;
+    });
+    at(formed + 1500, () => setIntro(null));
     return () => {
-      cancelAnimationFrame(raf);
-      clearTimeout(end);
+      timers.forEach(clearTimeout);
+      document.body.style.overflow = prevOverflow;
+      if (root.dataset.intro === "pre") root.dataset.intro = "show";
     };
   }, []);
 
   const rects: Record<string, Rect> = {};
-  solve(TREE, NATURAL.x, NATURAL.y, NATURAL.w, NATURAL.h, phase === "pre" ? "portrait.jpg" : hover, rects, phase === "pre" ? 14 : GROW);
+  solve(TREE, NATURAL.x, NATURAL.y, NATURAL.w, NATURAL.h, intro ? null : hover, rects, intro ? new Set(REVEAL.slice(0, intro.step)) : null);
 
   // a short delay so moving across the mosaic does not make it jump around
   const enter = (file: string) => {
@@ -98,8 +125,21 @@ export default function PhotoCluster() {
 
   return (
     <>
-      <div className="relative w-full" style={{ paddingBottom: `${layout.aspect}%` }} onMouseLeave={leave}>
-        {layout.items.map((it, i) => {
+      <div
+        ref={wrap}
+        className="mosaic relative w-full"
+        style={{
+          paddingBottom: `${layout.aspect}%`,
+          ...(intro && {
+            visibility: "visible",
+            opacity: 1,
+            transform: `translateY(${intro.lifted ? 0 : intro.dy}px) scale(${intro.lifted ? 1 : 0.5 + (0.5 * (intro.step - 1)) / (REVEAL.length - 1)})`,
+            transition: "transform 1000ms cubic-bezier(0.2, 0.8, 0.2, 1)",
+          }),
+        }}
+        onMouseLeave={leave}
+      >
+        {layout.items.map((it) => {
           const p = photoMeta[it.file];
           const r = rects[it.file];
           return (
@@ -117,9 +157,10 @@ export default function PhotoCluster() {
               aria-label={`Open photo: ${p.alt}`}
               className="absolute block cursor-zoom-in overflow-hidden rounded-[5px] outline-none transition-[left,top,width,height,opacity] duration-500 ease-[cubic-bezier(0.2,0.8,0.2,1)]"
               style={{
-                opacity: phase === "pre" ? 0 : 1,
-                transitionDuration: phase === "done" ? undefined : "1000ms",
-                transitionDelay: phase === "go" ? `${(i % 6) * 45}ms` : undefined,
+                ...(intro && {
+                  opacity: REVEAL.indexOf(it.file) < intro.step ? 1 : 0,
+                  transitionDuration: "900ms",
+                }),
                 left: `${r.x}%`,
                 top: `${(r.y / layout.aspect) * 100}%`,
                 width: `${r.w}%`,

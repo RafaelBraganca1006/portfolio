@@ -80,10 +80,10 @@ export default function Dock() {
     <div className="pointer-events-none fixed inset-x-0 top-3 z-50 flex justify-center sm:top-4">
     <nav
       aria-label="Sections"
-      className="pointer-events-auto rounded-full border border-line bg-bg/70 p-1 shadow sm:p-1.5-[0_10px_30px_-12px_rgba(0,0,0,0.45)] backdrop-blur-xl"
+      className="dock-nav pointer-events-auto rounded-full border border-line bg-bg/70 p-1 shadow sm:p-1.5-[0_10px_30px_-12px_rgba(0,0,0,0.45)] backdrop-blur-xl"
     >
       <ul className="flex items-center gap-0.5 sm:gap-1">
-        {items.map((i) => {
+        {items.map((i, n) => {
           const home = i.id === "home";
           const on = home ? active === null : active === i.id;
           const cls = `flex h-[38px] w-[38px] items-center sm:h-11 sm:w-11 justify-center rounded-full transition duration-300 ${
@@ -95,7 +95,7 @@ export default function Dock() {
             </svg>
           );
           return (
-            <li key={i.id} className="group relative">
+            <li key={i.id} className="dock-li group relative" style={{ "--k": n } as React.CSSProperties}>
               {home ? (
                 <button type="button" onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })} aria-label="Back to the start" aria-current={on ? "true" : undefined} className={cls}>
                   {svg}
@@ -111,7 +111,7 @@ export default function Dock() {
             </li>
           );
         })}
-        <li className="group relative">
+        <li className="dock-li group relative" style={{ "--k": items.length } as React.CSSProperties}>
           <button
             type="button"
             aria-label="Piano"

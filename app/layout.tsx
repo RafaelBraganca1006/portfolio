@@ -5,6 +5,9 @@ import "./globals.css";
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-geist" });
 
+// first load of the home page (no hash, no reduced motion): hide header and text until the photo intro has played
+const introScript = `try{if(location.pathname==='/'&&!location.hash&&!matchMedia('(prefers-reduced-motion: reduce)').matches){document.documentElement.dataset.intro='pre'}}catch(e){}`;
+
 export const metadata: Metadata = {
   title: "Rafael Bragança Oliveira",
   description:
@@ -19,6 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className={geist.variable} data-theme="light" suppressHydrationWarning>
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
+        <script dangerouslySetInnerHTML={{ __html: introScript }} />
       </head>
       <body>
         <ThemeToggle />
