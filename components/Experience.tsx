@@ -152,7 +152,7 @@ export default function Experience() {
             id={job.id}
             className="grid scroll-mt-24 gap-3 sm:grid-cols-[10rem_1fr] sm:gap-7"
           >
-            <div data-reveal="0.8" data-start="0.9" data-span="0.3"><div data-drift="0.07"><DateCol date={job.date} location={job.location} /></div></div>
+            <DateCol date={job.date} location={job.location} />
 
             <div>
               <div data-type className="font-display text-[22px] leading-[1.4] text-fg/55 sm:text-[26px]">
