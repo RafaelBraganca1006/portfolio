@@ -19,9 +19,13 @@ export default function CountUp({ value, index = 0 }: { value: string; index?: n
     if (!m || !box || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     setText(shown(0));
     let raf = 0;
+    let timer: ReturnType<typeof setTimeout> | undefined;
     let started = false;
+    let frozen = false;
     const run = () => {
-      if (started) return;
+      clearTimeout(timer);
+      if (started && !frozen) return;
+      frozen = false;
       started = true;
       const t0 = performance.now() + index * 140;
       const D = 1500;
@@ -34,16 +38,23 @@ export default function CountUp({ value, index = 0 }: { value: string; index?: n
       raf = requestAnimationFrame(tick);
     };
     if (box.dataset.in) run();
+    // when scrolling back up the block fades out showing its final numbers; only then do they go back to 0
     const reset = () => {
-      cancelAnimationFrame(raf);
-      started = false;
-      setText(shown(0));
+      clearTimeout(timer);
+      cancelAnimationFrame(raf); // freeze while it fades out
+      frozen = true;
+      timer = setTimeout(() => {
+        started = false;
+        frozen = false;
+        setText(shown(0));
+      }, 900);
     };
     box.addEventListener("stats-in", run);
     box.addEventListener("stats-out", reset);
     return () => {
       box.removeEventListener("stats-in", run);
       box.removeEventListener("stats-out", reset);
+      clearTimeout(timer);
       cancelAnimationFrame(raf);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
