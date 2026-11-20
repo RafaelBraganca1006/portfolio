@@ -7,7 +7,7 @@ const clamp = (v: number, a = 0, b = 1) => Math.min(b, Math.max(a, v));
 /**
  * Scroll-driven effects, all computed from the element's position in the viewport:
  *  - [data-reveal="depth"]   rises and fades in (data-start / data-span set the window, as fractions of the viewport height)
- *  - [data-type]             "typewriter": the words appear one after another as the block scrolls up, with a caret
+ *  - [data-type]             phrases appear one after another as the block scrolls up
  *  - [data-drift="k"]        continuous parallax: shifts by k * (distance from the viewport centre)
  * Finished elements get their inline styles removed, so nothing keeps a transform on it.
  */
@@ -19,9 +19,6 @@ export default function ScrollReveal() {
     const drifts = Array.from(document.querySelectorAll<HTMLElement>("[data-drift]"));
 
     // split text into words (elements such as the hover pills stay whole, so React's markup is never touched)
-    const caret = document.createElement("span");
-    caret.setAttribute("aria-hidden", "true");
-    caret.className = "type-caret";
     const typed = Array.from(document.querySelectorAll<HTMLElement>("[data-type]")).map((box) => {
       const parts: HTMLElement[] = [];
       const walk = (node: Node) => {
@@ -51,7 +48,19 @@ export default function ScrollReveal() {
         }
       };
       walk(box);
-      return { box, parts, done: false };
+      // group the words into phrases: a phrase ends at , . ; : or after ~6 words
+      const chunk: number[] = [];
+      let c = 0;
+      let len = 0;
+      parts.forEach((w, i) => {
+        chunk[i] = c;
+        len++;
+        if (/[,.;:]$/.test(w.textContent || "") || len >= 6) {
+          c++;
+          len = 0;
+        }
+      });
+      return { box, parts, chunk, count: len ? c + 1 : c, done: false };
     });
 
     let frame = 0;
@@ -93,11 +102,9 @@ export default function ScrollReveal() {
         if (!open) return;
         const top = t.box.getBoundingClientRect().top;
         const p = clamp((vh * 0.97 - top) / (vh * 0.3)); // finishes with the text still in the lower part of the screen
-        const n = t.parts.length;
         if (p >= 1) {
           if (!t.done) {
             t.parts.forEach((w) => (w.style.opacity = ""));
-            caret.remove();
             t.done = true;
             rest.forEach((c) => {
               c.style.visibility = "";
@@ -109,13 +116,10 @@ export default function ScrollReveal() {
           return;
         }
         t.done = false;
-        const head = p * (n + 3);
+        const head = p * (t.count + 0.8);
         t.parts.forEach((w, i) => {
-          w.style.opacity = String(0.08 + 0.92 * clamp((head - i) / 3));
+          w.style.opacity = String(0.08 + 0.92 * clamp(head - t.chunk[i]));
         });
-        const at = t.parts[Math.min(n - 1, Math.floor(head))];
-        if (p > 0 && at) at.before(caret);
-        else caret.remove();
       });
 
       for (const el of drifts) {
@@ -135,7 +139,6 @@ export default function ScrollReveal() {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
       cancelAnimationFrame(frame);
-      caret.remove();
       reveals.forEach(({ el }) => (el.style.transform = el.style.opacity = el.style.filter = ""));
       drifts.forEach((el) => (el.style.transform = ""));
       typed.forEach((t) => {
