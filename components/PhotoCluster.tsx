@@ -88,15 +88,15 @@ export default function PhotoCluster() {
     const r = box.getBoundingClientRect();
     const dy = window.innerHeight / 2 - (r.top + r.height / 2);
     const total = REVEAL.length;
-    const FIRST = 800; // the portrait is alone for a moment
-    const STEP = 420; // one new photo every STEP ms
+    const FIRST = 600; // the portrait is alone for a moment
+    const STEP = 200; // one new photo every STEP ms
     const timers: ReturnType<typeof setTimeout>[] = [];
     const at = (ms: number, fn: () => void) => timers.push(setTimeout(fn, ms));
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     setIntro({ step: 1, lifted: false, dy });
     for (let k = 2; k <= total; k++) at(FIRST + (k - 2) * STEP, () => setIntro((v) => v && { ...v, step: k }));
-    const formed = FIRST + (total - 2) * STEP + 1100;
+    const formed = FIRST + (total - 2) * STEP + 800;
     at(formed, () => setIntro((v) => v && { ...v, lifted: true })); // the mosaic rises
     at(formed + 1000, () => {
       root.dataset.intro = "show"; // header + text
@@ -112,6 +112,12 @@ export default function PhotoCluster() {
 
   const rects: Record<string, Rect> = {};
   solve(TREE, NATURAL.x, NATURAL.y, NATURAL.w, NATURAL.h, intro ? null : hover, rects, intro ? new Set(REVEAL.slice(0, intro.step)) : null);
+
+  // alone, the portrait already has the shape it ends up with, centered in the mosaic area
+  if (intro && intro.step === 1) {
+    const f = leafRect("portrait.jpg");
+    rects["portrait.jpg"] = { x: NATURAL.x + (NATURAL.w - f.w) / 2, y: NATURAL.y + (NATURAL.h - f.h) / 2, w: f.w, h: f.h };
+  }
 
   // a short delay so moving across the mosaic does not make it jump around
   const enter = (file: string) => {
@@ -159,7 +165,7 @@ export default function PhotoCluster() {
               style={{
                 ...(intro && {
                   opacity: REVEAL.indexOf(it.file) < intro.step ? 1 : 0,
-                  transitionDuration: "900ms",
+                  transitionDuration: "700ms",
                 }),
                 left: `${r.x}%`,
                 top: `${(r.y / layout.aspect) * 100}%`,
