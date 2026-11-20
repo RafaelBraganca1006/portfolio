@@ -1,3 +1,4 @@
+import HeroDither from "./HeroDither";
 import PhotoCluster from "./PhotoCluster";
 import BmwHoverCard from "./HoverCard";
 import { BmwMark, BrazilFlag, EthMark, GitHubMark, LinkedInMark, MailMark, SwissFlag } from "./InlineMark";
@@ -11,7 +12,7 @@ export default function Hero() {
   const idx = (): Vars => ({ "--i": n++ });
   const W = (s: string) =>
     s.split(/(\s+)/).map((t, k) =>
-      !t.trim() || /^[.,;:]+$/.test(t) ? (
+      !t.trim() ? (
         t
       ) : (
         <span key={k} className="rv" style={idx()}>
@@ -21,6 +22,11 @@ export default function Hero() {
     );
   const M = (mark: React.ReactNode) => (
     <span className="rv rv-pop" style={idx()}>
+      {mark}
+    </span>
+  );
+  const P = (mark: string) => (
+    <span className="rv" style={idx()}>
       {mark}
     </span>
   );
@@ -41,7 +47,8 @@ export default function Hero() {
   };
 
   return (
-    <section className="mx-auto flex min-h-svh max-w-2xl flex-col items-center px-6 pb-16 pt-24">
+    <section className="relative isolate mx-auto flex min-h-svh max-w-2xl flex-col items-center px-6 pb-16 pt-24">
+      <div className="pointer-events-none absolute inset-y-0 left-1/2 -z-10 w-screen -translate-x-1/2"><HeroDither /></div>
       <PhotoCluster />
 
       <div className="hero-text mt-10 w-full shrink-0 text-[16px] leading-[1.7] text-muted">
@@ -57,7 +64,7 @@ export default function Hero() {
           {W(". Originally from ")}
           {B("São Paulo, Brazil")} {M(<BrazilFlag />)}
           {W(", now living in ")}
-          {B("Zurich")} {M(<SwissFlag />)}.
+          {B("Zurich")} {M(<SwissFlag />)}{P(".")}
         </p>
 
         <div className="mt-3">
@@ -72,10 +79,10 @@ export default function Hero() {
 
         <p className="mt-5">
           {W("Reach out to me via ")}
-          {M(<LinkedInMark />)} {Link(profile.linkedin, "LinkedIn")}, {M(<MailMark />)}{" "}
+          {M(<LinkedInMark />)} {Link(profile.linkedin, "LinkedIn")}{P(",")} {M(<MailMark />)}{" "}
           {Link(`mailto:${profile.email}`, "Email")}
           {W(" or ")}
-          {M(<GitHubMark />)} {Link(profile.github, "GitHub")}.
+          {M(<GitHubMark />)} {Link(profile.github, "GitHub")}{P(".")}
         </p>
       </div>
 
