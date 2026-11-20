@@ -49,9 +49,13 @@ export default function CountUp({ value, index = 0 }: { value: string; index?: n
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // the final value reserves the width, so the layout does not jump while the number counts up
   return (
-    <span ref={ref} className="tabular-nums">
-      {text}
+    <span ref={ref} className="inline-grid tabular-nums">
+      <span aria-hidden className="invisible col-start-1 row-start-1">
+        {value}
+      </span>
+      <span className="col-start-1 row-start-1">{text}</span>
     </span>
   );
 }
