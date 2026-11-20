@@ -133,7 +133,7 @@ function DateCol({ date, location }: { date: string; location?: string }) {
 export default function Experience() {
   return (
     <Section id="experience" title="Experience">
-      <div data-reveal="0.7" data-start="0.95" data-span="0.3" className="-mt-1 mb-14 flex justify-center">
+      <div data-first-gate data-reveal="0.7" data-start="0.95" data-span="0.3" className="-mt-1 mb-14 flex justify-center">
         <a
           href="/Rafael_Braganca_CV.pdf"
           download
@@ -161,18 +161,18 @@ export default function Experience() {
               </div>
 
               {stats[job.id] && (
-                <dl data-noblur data-reveal="0.5" data-start="0.98" data-span="0.2" className="mt-6 flex flex-wrap gap-x-10 gap-y-4">
+                <dl className="hold-fade mt-6 flex flex-wrap gap-x-10 gap-y-4">
                   {stats[job.id].map((s, k) => (
                     <div key={s.label}>
                       <dt className="font-display text-4xl leading-none text-fg sm:text-5xl"><CountUp value={s.value} index={k} />
                       </dt>
-                      <dd className="stat-label mt-2 text-xs text-muted">{s.label}</dd>
+                      <dd className="mt-2 text-xs text-muted">{s.label}</dd>
                     </div>
                   ))}
                 </dl>
               )}
 
-              <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-3 empty:hidden">
+              <div className="hold-fade mt-4 flex flex-wrap items-center gap-x-5 gap-y-3 empty:hidden">
                 {job.id === "exp-thesis" && (
                   <a
                     href="/cascade-thesis.pdf"

@@ -17,7 +17,6 @@ export default function CountUp({ value, index = 0 }: { value: string; index?: n
   useEffect(() => {
     const box = ref.current?.closest("dl");
     if (!m || !box || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    box.dataset.wait = "1";
     setText(shown(0));
     let raf = 0;
     let started = false;
@@ -35,9 +34,16 @@ export default function CountUp({ value, index = 0 }: { value: string; index?: n
       raf = requestAnimationFrame(tick);
     };
     if (box.dataset.in) run();
+    const reset = () => {
+      cancelAnimationFrame(raf);
+      started = false;
+      setText(shown(0));
+    };
     box.addEventListener("stats-in", run);
+    box.addEventListener("stats-out", reset);
     return () => {
       box.removeEventListener("stats-in", run);
+      box.removeEventListener("stats-out", reset);
       cancelAnimationFrame(raf);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps

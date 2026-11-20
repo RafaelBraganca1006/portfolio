@@ -91,37 +91,45 @@ export default function ScrollReveal() {
       }
       if (moving && !frame) frame = requestAnimationFrame(update);
 
+      const gate = reveals.find((r) => r.el.hasAttribute("data-first-gate"));
       typed.forEach((t, idx) => {
-        // an entry only shows once the one above it has finished typing
-        const open = idx === 0 || typed[idx - 1].done;
+        // an entry only shows once the one above it has finished typing (the first waits for the title and the CV button)
+        const open = idx === 0 ? !gate || gate.cur >= 0.98 : typed[idx - 1].done;
         const li = t.box.closest<HTMLElement>("li");
         if (li) li.style.opacity = open ? "1" : "0";
-        // stats and links of an entry wait for its own text to finish
+        // stats and links of an entry wait for its own text to finish, and fade out again when scrolling back up
         const rest = Array.from(t.box.parentElement?.children ?? []).filter((c): c is HTMLElement => c !== t.box && c instanceof HTMLElement);
-        rest.forEach((c) => (c.style.visibility = t.done ? "" : "hidden"));
-        if (!open) return;
+        const finish = (done: boolean) => {
+          t.done = done;
+          rest.forEach((c) => {
+            if (done) delete c.dataset.hold;
+            else c.dataset.hold = "1";
+            if (c.tagName === "DL") {
+              if (done) c.dataset.in = "1";
+              else delete c.dataset.in;
+              c.dispatchEvent(new Event(done ? "stats-in" : "stats-out"));
+            }
+          });
+        };
+        if (!open) {
+          if (t.done) {
+            finish(false);
+            t.parts.forEach((w) => (w.style.opacity = "0.08"));
+          } else rest.forEach((c) => (c.dataset.hold = "1"));
+          return;
+        }
         const top = t.box.getBoundingClientRect().top;
         const p = clamp((vh * 0.97 - top) / (vh * 0.3)); // finishes with the text still in the lower part of the screen
         if (p >= 1) {
           if (!t.done) {
             t.parts.forEach((w) => (w.style.opacity = ""));
-            t.done = true;
-            rest.forEach((c) => {
-              if (c.tagName === "DL") {
-                c.dataset.in = "1";
-                c.dispatchEvent(new Event("stats-in"));
-              }
-            });
-            rest.forEach((c) => {
-              c.style.visibility = "";
-              const r = reveals.find((x) => x.el === c);
-              if (r) r.cur = 0; // so they rise in instead of popping
-            });
+            finish(true);
             if (!frame) frame = requestAnimationFrame(update); // opens the next entry
           }
           return;
         }
-        t.done = false;
+        if (t.done) finish(false);
+        else rest.forEach((c) => (c.dataset.hold = "1"));
         const head = p * (t.count + 0.8);
         t.parts.forEach((w, i) => {
           w.style.opacity = String(0.08 + 0.92 * clamp(head - t.chunk[i]));
@@ -151,7 +159,7 @@ export default function ScrollReveal() {
         t.parts.forEach((w) => (w.style.opacity = ""));
         const li = t.box.closest<HTMLElement>("li");
         if (li) li.style.opacity = "";
-        Array.from(t.box.parentElement?.children ?? []).forEach((c) => c instanceof HTMLElement && (c.style.visibility = ""));
+        Array.from(t.box.parentElement?.children ?? []).forEach((c) => c instanceof HTMLElement && delete c.dataset.hold);
       });
     };
   }, []);

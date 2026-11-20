@@ -134,6 +134,7 @@ html[data-intro="show"] .theme-btn { animation: rv-fade 0.9s ease-out 0.7s backw
 }
 @keyframes caret-blink { 50% { opacity: 0; } }
 
-/* stats: labels fade in after the numbers start counting */
-.stat-label { transition: opacity 0.8s ease 0.5s, transform 0.8s ease 0.5s; }
-dl[data-wait]:not([data-in]) .stat-label { opacity: 0; transform: translateY(4px); }
+/* stats and links of an experience entry fade in once its text is done, and out again when scrolling back up */
+.hold-fade { transition: opacity 0.8s ease, transform 0.8s cubic-bezier(0.22, 1, 0.36, 1); }
+.hold-fade[data-hold] { opacity: 0; transform: translateY(10px); }
+@media (prefers-reduced-motion: reduce) { .hold-fade { transition: none; } }
