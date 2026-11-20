@@ -1,4 +1,3 @@
-import HeroDither from "./HeroDither";
 import PhotoCluster from "./PhotoCluster";
 import BmwHoverCard from "./HoverCard";
 import { BmwMark, BrazilFlag, EthMark, GitHubMark, LinkedInMark, MailMark, SwissFlag } from "./InlineMark";
@@ -47,8 +46,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="relative isolate mx-auto flex min-h-svh max-w-2xl flex-col items-center px-6 pb-16 pt-24">
-      <div className="pointer-events-none absolute inset-y-0 left-1/2 -z-10 w-screen -translate-x-1/2"><HeroDither /></div>
+    <section className="mx-auto flex min-h-svh max-w-2xl flex-col items-center px-6 pb-16 pt-24">
       <PhotoCluster />
 
       <div className="hero-text mt-10 w-full shrink-0 text-[16px] leading-[1.7] text-muted">

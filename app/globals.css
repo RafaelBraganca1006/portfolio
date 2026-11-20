@@ -122,7 +122,3 @@ html[data-intro="show"] .theme-btn { animation: rv-fade 0.9s ease-out 0.7s backw
 @media (prefers-reduced-motion: reduce) {
   .dock-nav, .dock-li, .theme-btn { animation: none !important; }
 }
-
-/* dithered flakes behind the hero fade in with the rest of the intro */
-.hero-dither { transition: opacity 1.6s ease-out; }
-html[data-intro="pre"] .hero-dither { opacity: 0; }
