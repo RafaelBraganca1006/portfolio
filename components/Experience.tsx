@@ -1,5 +1,6 @@
 import Section from "./Section";
 import Pop from "./Pop";
+import CountUp from "./CountUp";
 import { BmwMark, EthMark, ImgMark, TumMark } from "./InlineMark";
 import { experience } from "@/data/content";
 
@@ -160,11 +161,12 @@ export default function Experience() {
               </div>
 
               {stats[job.id] && (
-                <dl data-noblur data-reveal="0.7" data-start="0.98" data-span="0.28" className="mt-6 flex flex-wrap gap-x-10 gap-y-4">
-                  {stats[job.id].map((s) => (
+                <dl data-noblur data-reveal="0.5" data-start="0.98" data-span="0.2" className="mt-6 flex flex-wrap gap-x-10 gap-y-4">
+                  {stats[job.id].map((s, k) => (
                     <div key={s.label}>
-                      <dt className="font-display text-4xl leading-none text-fg sm:text-5xl">{s.value}</dt>
-                      <dd className="mt-2 text-xs text-muted">{s.label}</dd>
+                      <dt className="font-display text-4xl leading-none text-fg sm:text-5xl"><CountUp value={s.value} index={k} />
+                      </dt>
+                      <dd className="stat-label mt-2 text-xs text-muted">{s.label}</dd>
                     </div>
                   ))}
                 </dl>

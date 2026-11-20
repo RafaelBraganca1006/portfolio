@@ -133,3 +133,7 @@ html[data-intro="show"] .theme-btn { animation: rv-fade 0.9s ease-out 0.7s backw
   animation: caret-blink 0.9s steps(1) infinite;
 }
 @keyframes caret-blink { 50% { opacity: 0; } }
+
+/* stats: labels fade in after the numbers start counting */
+.stat-label { transition: opacity 0.8s ease 0.5s, transform 0.8s ease 0.5s; }
+dl[data-wait]:not([data-in]) .stat-label { opacity: 0; transform: translateY(4px); }

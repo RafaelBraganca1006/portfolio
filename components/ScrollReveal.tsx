@@ -107,6 +107,12 @@ export default function ScrollReveal() {
             t.parts.forEach((w) => (w.style.opacity = ""));
             t.done = true;
             rest.forEach((c) => {
+              if (c.tagName === "DL") {
+                c.dataset.in = "1";
+                c.dispatchEvent(new Event("stats-in"));
+              }
+            });
+            rest.forEach((c) => {
               c.style.visibility = "";
               const r = reveals.find((x) => x.el === c);
               if (r) r.cur = 0; // so they rise in instead of popping
