@@ -150,6 +150,7 @@ export default function Experience() {
           <li
             key={job.id}
             id={job.id}
+            data-reveal={1 + (experience.indexOf(job) % 2) * 0.35}
             className="grid scroll-mt-24 gap-3 sm:grid-cols-[10rem_1fr] sm:gap-7"
           >
             <DateCol date={job.date} location={job.location} />

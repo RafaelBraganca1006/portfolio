@@ -9,7 +9,7 @@ export default function Projects() {
     <Section id="projects" title="Projects" width="max-w-6xl">
       <ul className="grid gap-x-8 gap-y-16 sm:grid-cols-2">
         {projects.map((p) => (
-          <li key={p.title}>
+          <li key={p.title} data-reveal={1 + (projects.indexOf(p) % 2) * 0.5}>
             <a
               href={p.links[0].href}
               {...open(p.links[0].href)}
