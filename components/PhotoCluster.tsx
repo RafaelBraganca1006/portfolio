@@ -88,7 +88,7 @@ export default function PhotoCluster() {
     const r = box.getBoundingClientRect();
     const dy = window.innerHeight / 2 - (r.top + r.height / 2);
     const total = REVEAL.length;
-    const FIRST = 600; // the portrait is alone for a moment
+    const FIRST = 100; // just enough for the first frame to paint before the photos start sliding in
     const STEP = 200; // one new photo every STEP ms
     const timers: ReturnType<typeof setTimeout>[] = [];
     const at = (ms: number, fn: () => void) => timers.push(setTimeout(fn, ms));
