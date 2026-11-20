@@ -9,7 +9,7 @@ export default function Projects() {
     <Section id="projects" title="Projects" width="max-w-6xl">
       <ul className="grid gap-x-8 gap-y-16 sm:grid-cols-2">
         {projects.map((p) => (
-          <li key={p.title} data-reveal={1 + (projects.indexOf(p) % 2) * 0.5}>
+          <li key={p.title} data-reveal={0.8 + (projects.indexOf(p) % 2) * 0.4} data-start="0.88" data-span="0.4">
             <a
               href={p.links[0].href}
               {...open(p.links[0].href)}
@@ -22,6 +22,7 @@ export default function Projects() {
                 alt={p.alt}
                 loading="lazy"
                 style={{ objectPosition: p.position ?? "50% 50%" }}
+                data-drift="-0.05" data-scale="1.14"
                 className="aspect-[16/9] w-full object-cover"
               />
               <span className="pointer-events-none absolute inset-0 flex items-end bg-black/80 p-5 text-left text-[13px] leading-relaxed text-white/90 opacity-0 backdrop-blur-sm transition duration-300 group-hover:opacity-100 group-focus-visible:opacity-100 sm:p-6 sm:text-sm">
@@ -29,8 +30,8 @@ export default function Projects() {
               </span>
             </a>
 
-            <h3 className="mt-5 font-display text-2xl leading-tight text-fg">{p.title}</h3>
-            <p className="mt-1.5 max-w-md text-[15px] leading-relaxed text-fg/70">{p.desc}</p>
+            <h3 data-reveal="0.5" data-start="0.9" data-span="0.25" className="mt-5 font-display text-2xl leading-tight text-fg">{p.title}</h3>
+            <p data-reveal="0.4" data-start="0.9" data-span="0.25" className="mt-1.5 max-w-md text-[15px] leading-relaxed text-fg/70">{p.desc}</p>
             <p className="mt-2 hidden max-w-md text-[13px] leading-relaxed text-muted [@media(hover:none)]:block">{p.tech}</p>
             <p className="mt-3 flex gap-5 text-sm">
               {p.links.map((l) => (

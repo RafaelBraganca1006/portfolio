@@ -122,3 +122,14 @@ html[data-intro="show"] .theme-btn { animation: rv-fade 0.9s ease-out 0.7s backw
 @media (prefers-reduced-motion: reduce) {
   .dock-nav, .dock-li, .theme-btn { animation: none !important; }
 }
+
+/* typewriter caret used by ScrollReveal */
+.type-caret {
+  display: inline-block;
+  width: 2px;
+  height: 0.85em;
+  margin: 0 1px -0.08em 0;
+  background: var(--accent);
+  animation: caret-blink 0.9s steps(1) infinite;
+}
+@keyframes caret-blink { 50% { opacity: 0; } }

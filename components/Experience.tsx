@@ -150,18 +150,17 @@ export default function Experience() {
           <li
             key={job.id}
             id={job.id}
-            data-reveal={1 + (experience.indexOf(job) % 2) * 0.35}
             className="grid scroll-mt-24 gap-3 sm:grid-cols-[10rem_1fr] sm:gap-7"
           >
-            <DateCol date={job.date} location={job.location} />
+            <div data-reveal="0.8" data-start="0.9" data-span="0.3"><div data-drift="0.07"><DateCol date={job.date} location={job.location} /></div></div>
 
             <div>
-              <div className="font-display text-[22px] leading-[1.4] text-fg/55 sm:text-[26px]">
+              <div data-type className="font-display text-[22px] leading-[1.4] text-fg/55 sm:text-[26px]">
                 {sentences[job.id]}
               </div>
 
               {stats[job.id] && (
-                <dl className="mt-6 flex flex-wrap gap-x-10 gap-y-4">
+                <dl data-reveal="0.7" data-start="0.9" data-span="0.3" className="mt-6 flex flex-wrap gap-x-10 gap-y-4">
                   {stats[job.id].map((s) => (
                     <div key={s.label}>
                       <dt className="font-display text-4xl leading-none text-fg sm:text-5xl">{s.value}</dt>
