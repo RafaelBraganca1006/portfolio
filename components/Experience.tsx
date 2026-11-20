@@ -150,7 +150,7 @@ export default function Experience() {
           <li
             key={job.id}
             id={job.id}
-            className="grid scroll-mt-24 gap-3 sm:grid-cols-[10rem_1fr] sm:gap-7"
+            className="grid scroll-mt-24 gap-3 transition-opacity duration-700 sm:grid-cols-[10rem_1fr] sm:gap-7"
           >
             <DateCol date={job.date} location={job.location} />
 

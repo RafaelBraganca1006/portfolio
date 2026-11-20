@@ -7,7 +7,7 @@ const clamp = (v: number, a = 0, b = 1) => Math.min(b, Math.max(a, v));
 /**
  * Scroll-driven effects, all computed from the element's position in the viewport:
  *  - [data-reveal="depth"]   rises and fades in (data-start / data-span set the window, as fractions of the viewport height)
- *  - [data-type]             "typewriter": the letters appear one after another as the block scrolls up, with a caret
+ *  - [data-type]             "typewriter": the words appear one after another as the block scrolls up, with a caret
  *  - [data-drift="k"]        continuous parallax: shifts by k * (distance from the viewport centre)
  * Finished elements get their inline styles removed, so nothing keeps a transform on it.
  */
@@ -18,7 +18,7 @@ export default function ScrollReveal() {
     const reveals = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]")).map((el) => ({ el, cur: -1 }));
     const drifts = Array.from(document.querySelectorAll<HTMLElement>("[data-drift]"));
 
-    // split text into letters (elements such as the hover pills stay whole, so React's markup is never touched)
+    // split text into words (elements such as the hover pills stay whole, so React's markup is never touched)
     const caret = document.createElement("span");
     caret.setAttribute("aria-hidden", "true");
     caret.className = "type-caret";
@@ -28,10 +28,15 @@ export default function ScrollReveal() {
         for (const c of Array.from(node.childNodes)) {
           if (c.nodeType === Node.TEXT_NODE) {
             const frag = document.createDocumentFragment();
-            for (const ch of Array.from(c.textContent || "")) {
+            for (const t of (c.textContent || "").split(/(\s+)/)) {
+              if (!t) continue;
+              if (!t.trim()) {
+                frag.append(t);
+                continue;
+              }
               const s = document.createElement("span");
-              s.textContent = ch;
-              s.style.opacity = "0";
+              s.textContent = t;
+              s.style.opacity = "0.08";
               parts.push(s);
               frag.append(s);
             }
@@ -39,7 +44,7 @@ export default function ScrollReveal() {
           } else if (c instanceof HTMLElement) {
             if (c.tagName === "STRONG" || c.tagName === "A") walk(c);
             else {
-              c.style.opacity = "0";
+              c.style.opacity = "0.08";
               parts.push(c);
             }
           }
@@ -77,7 +82,15 @@ export default function ScrollReveal() {
       }
       if (moving && !frame) frame = requestAnimationFrame(update);
 
-      for (const t of typed) {
+      typed.forEach((t, idx) => {
+        // an entry only shows once the one above it has finished typing
+        const open = idx === 0 || typed[idx - 1].done;
+        const li = t.box.closest<HTMLElement>("li");
+        if (li) li.style.opacity = open ? "1" : "0";
+        // stats and links of an entry wait for its own text to finish
+        const rest = Array.from(t.box.parentElement?.children ?? []).filter((c): c is HTMLElement => c !== t.box && c instanceof HTMLElement);
+        rest.forEach((c) => (c.style.visibility = t.done ? "" : "hidden"));
+        if (!open) return;
         const top = t.box.getBoundingClientRect().top;
         const p = clamp((vh * 0.86 - top) / (vh * 0.4));
         const n = t.parts.length;
@@ -86,18 +99,24 @@ export default function ScrollReveal() {
             t.parts.forEach((w) => (w.style.opacity = ""));
             caret.remove();
             t.done = true;
+            rest.forEach((c) => {
+              c.style.visibility = "";
+              const r = reveals.find((x) => x.el === c);
+              if (r) r.cur = 0; // so they rise in instead of popping
+            });
+            if (!frame) frame = requestAnimationFrame(update); // opens the next entry
           }
-          continue;
+          return;
         }
         t.done = false;
-        const head = p * (n + 1);
+        const head = p * (n + 3);
         t.parts.forEach((w, i) => {
-          w.style.opacity = i < head ? "1" : "0";
+          w.style.opacity = String(0.08 + 0.92 * clamp((head - i) / 3));
         });
         const at = t.parts[Math.min(n - 1, Math.floor(head))];
         if (p > 0 && at) at.before(caret);
         else caret.remove();
-      }
+      });
 
       for (const el of drifts) {
         const r = el.getBoundingClientRect();
@@ -119,7 +138,12 @@ export default function ScrollReveal() {
       caret.remove();
       reveals.forEach(({ el }) => (el.style.transform = el.style.opacity = el.style.filter = ""));
       drifts.forEach((el) => (el.style.transform = ""));
-      typed.forEach((t) => t.parts.forEach((w) => (w.style.opacity = "")));
+      typed.forEach((t) => {
+        t.parts.forEach((w) => (w.style.opacity = ""));
+        const li = t.box.closest<HTMLElement>("li");
+        if (li) li.style.opacity = "";
+        Array.from(t.box.parentElement?.children ?? []).forEach((c) => c instanceof HTMLElement && (c.style.visibility = ""));
+      });
     };
   }, []);
   return null;
