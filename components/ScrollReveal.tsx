@@ -7,7 +7,7 @@ const clamp = (v: number, a = 0, b = 1) => Math.min(b, Math.max(a, v));
 /**
  * Scroll-driven effects, all computed from the element's position in the viewport:
  *  - [data-reveal="depth"]   rises and fades in (data-start / data-span set the window, as fractions of the viewport height)
- *  - [data-type]             "typewriter": the words appear one after another as the block scrolls up, with a caret
+ *  - [data-type]             "typewriter": the letters appear one after another as the block scrolls up, with a caret
  *  - [data-drift="k"]        continuous parallax: shifts by k * (distance from the viewport centre)
  * Finished elements get their inline styles removed, so nothing keeps a transform on it.
  */
@@ -15,10 +15,10 @@ export default function ScrollReveal() {
   useEffect(() => {
     if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
 
-    const reveals = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]"));
+    const reveals = Array.from(document.querySelectorAll<HTMLElement>("[data-reveal]")).map((el) => ({ el, cur: -1 }));
     const drifts = Array.from(document.querySelectorAll<HTMLElement>("[data-drift]"));
 
-    // split text into words (elements such as the hover pills stay whole, so React's markup is never touched)
+    // split text into letters (elements such as the hover pills stay whole, so React's markup is never touched)
     const caret = document.createElement("span");
     caret.setAttribute("aria-hidden", "true");
     caret.className = "type-caret";
@@ -28,15 +28,10 @@ export default function ScrollReveal() {
         for (const c of Array.from(node.childNodes)) {
           if (c.nodeType === Node.TEXT_NODE) {
             const frag = document.createDocumentFragment();
-            for (const t of (c.textContent || "").split(/(\s+)/)) {
-              if (!t) continue;
-              if (!t.trim()) {
-                frag.append(t);
-                continue;
-              }
+            for (const ch of Array.from(c.textContent || "")) {
               const s = document.createElement("span");
-              s.textContent = t;
-              s.style.opacity = "0.08";
+              s.textContent = ch;
+              s.style.opacity = "0";
               parts.push(s);
               frag.append(s);
             }
@@ -44,7 +39,7 @@ export default function ScrollReveal() {
           } else if (c instanceof HTMLElement) {
             if (c.tagName === "STRONG" || c.tagName === "A") walk(c);
             else {
-              c.style.opacity = "0.08";
+              c.style.opacity = "0";
               parts.push(c);
             }
           }
@@ -59,11 +54,18 @@ export default function ScrollReveal() {
       frame = 0;
       const vh = window.innerHeight;
 
-      for (const el of reveals) {
+      let moving = false;
+      for (const r of reveals) {
+        const el = r.el;
         const depth = parseFloat(el.dataset.reveal || "1") || 1;
         const startF = parseFloat(el.dataset.start || "0.98");
         const spanF = parseFloat(el.dataset.span || String(0.3 * Math.min(depth, 1.6)));
-        const p = clamp((vh * startF - el.getBoundingClientRect().top) / (vh * spanF));
+        const target = clamp((vh * startF - el.getBoundingClientRect().top) / (vh * spanF));
+        // ease towards the target so the movement stays smooth even when the scroll wheel jumps
+        r.cur = r.cur < 0 ? target : r.cur + (target - r.cur) * 0.16;
+        if (Math.abs(target - r.cur) < 0.002) r.cur = target;
+        else moving = true;
+        const p = r.cur;
         if (p >= 1) {
           if (el.style.opacity) el.style.transform = el.style.opacity = el.style.filter = "";
           continue;
@@ -71,8 +73,9 @@ export default function ScrollReveal() {
         const e = 1 - Math.pow(1 - p, 3);
         el.style.transform = `translate3d(0, ${(1 - e) * 90 * depth}px, 0)`;
         el.style.opacity = String(e);
-        el.style.filter = e < 0.98 ? `blur(${(1 - e) * 4}px)` : "";
+        el.style.filter = !el.dataset.noblur && e < 0.98 ? `blur(${(1 - e) * 4}px)` : "";
       }
+      if (moving && !frame) frame = requestAnimationFrame(update);
 
       for (const t of typed) {
         const top = t.box.getBoundingClientRect().top;
@@ -87,9 +90,9 @@ export default function ScrollReveal() {
           continue;
         }
         t.done = false;
-        const head = p * (n + 3);
+        const head = p * (n + 1);
         t.parts.forEach((w, i) => {
-          w.style.opacity = String(0.08 + 0.92 * clamp((head - i) / 3));
+          w.style.opacity = i < head ? "1" : "0";
         });
         const at = t.parts[Math.min(n - 1, Math.floor(head))];
         if (p > 0 && at) at.before(caret);
@@ -114,7 +117,7 @@ export default function ScrollReveal() {
       window.removeEventListener("resize", onScroll);
       cancelAnimationFrame(frame);
       caret.remove();
-      reveals.forEach((el) => (el.style.transform = el.style.opacity = el.style.filter = ""));
+      reveals.forEach(({ el }) => (el.style.transform = el.style.opacity = el.style.filter = ""));
       drifts.forEach((el) => (el.style.transform = ""));
       typed.forEach((t) => t.parts.forEach((w) => (w.style.opacity = "")));
     };

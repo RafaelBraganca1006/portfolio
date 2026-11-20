@@ -132,7 +132,7 @@ function DateCol({ date, location }: { date: string; location?: string }) {
 export default function Experience() {
   return (
     <Section id="experience" title="Experience">
-      <div className="-mt-1 mb-14 flex justify-center">
+      <div data-reveal="0.7" data-start="0.95" data-span="0.3" className="-mt-1 mb-14 flex justify-center">
         <a
           href="/Rafael_Braganca_CV.pdf"
           download
@@ -160,7 +160,7 @@ export default function Experience() {
               </div>
 
               {stats[job.id] && (
-                <dl data-reveal="0.7" data-start="0.9" data-span="0.3" className="mt-6 flex flex-wrap gap-x-10 gap-y-4">
+                <dl data-noblur data-reveal="0.7" data-start="0.9" data-span="0.3" className="mt-6 flex flex-wrap gap-x-10 gap-y-4">
                   {stats[job.id].map((s) => (
                     <div key={s.label}>
                       <dt className="font-display text-4xl leading-none text-fg sm:text-5xl">{s.value}</dt>
