@@ -76,7 +76,7 @@ export default function PhotoCluster() {
   // slide in around it one by one (same easing as the hover effect), then the finished mosaic rises to its place.
   // Only after that do the header and the text appear (html[data-intro], see globals.css).
   const wrap = useRef<HTMLDivElement>(null);
-  const [intro, setIntro] = useState<{ step: number; lifted: boolean; dy: number } | null>(null);
+  const [intro, setIntro] = useState<{ step: number; lifted: boolean; dy: number; on: boolean } | null>(null);
   useLayoutEffect(() => {
     const root = document.documentElement;
     const box = wrap.current;
@@ -94,7 +94,8 @@ export default function PhotoCluster() {
     const at = (ms: number, fn: () => void) => timers.push(setTimeout(fn, ms));
     const prevOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    setIntro({ step: 1, lifted: false, dy });
+    setIntro({ step: 1, lifted: false, dy, on: false }); // no transitions for the very first frame
+    const raf = requestAnimationFrame(() => requestAnimationFrame(() => setIntro((v) => v && { ...v, on: true })));
     for (let k = 2; k <= total; k++) at(FIRST + (k - 2) * STEP, () => setIntro((v) => v && { ...v, step: k }));
     const formed = FIRST + (total - 2) * STEP + 800;
     at(formed, () => setIntro((v) => v && { ...v, lifted: true })); // the mosaic rises
@@ -104,6 +105,7 @@ export default function PhotoCluster() {
     });
     at(formed + 1500, () => setIntro(null));
     return () => {
+      cancelAnimationFrame(raf);
       timers.forEach(clearTimeout);
       document.body.style.overflow = prevOverflow;
       if (root.dataset.intro === "pre") root.dataset.intro = "show";
@@ -140,7 +142,7 @@ export default function PhotoCluster() {
             visibility: "visible",
             opacity: 1,
             transform: `translateY(${intro.lifted ? 0 : intro.dy}px) scale(${intro.lifted ? 1 : 0.5 + (0.5 * (intro.step - 1)) / (REVEAL.length - 1)})`,
-            transition: "transform 1000ms cubic-bezier(0.2, 0.8, 0.2, 1)",
+            transition: intro.on ? "transform 1000ms cubic-bezier(0.2, 0.8, 0.2, 1)" : "none",
           }),
         }}
         onMouseLeave={leave}
@@ -165,7 +167,7 @@ export default function PhotoCluster() {
               style={{
                 ...(intro && {
                   opacity: REVEAL.indexOf(it.file) < intro.step ? 1 : 0,
-                  transitionDuration: "700ms",
+                  transitionDuration: intro.on ? "700ms" : "0ms",
                 }),
                 left: `${r.x}%`,
                 top: `${(r.y / layout.aspect) * 100}%`,
