@@ -160,7 +160,7 @@ export default function Experience() {
               </div>
 
               {stats[job.id] && (
-                <dl data-noblur data-reveal="0.7" data-start="0.9" data-span="0.3" className="mt-6 flex flex-wrap gap-x-10 gap-y-4">
+                <dl data-noblur data-reveal="0.7" data-start="0.98" data-span="0.28" className="mt-6 flex flex-wrap gap-x-10 gap-y-4">
                   {stats[job.id].map((s) => (
                     <div key={s.label}>
                       <dt className="font-display text-4xl leading-none text-fg sm:text-5xl">{s.value}</dt>

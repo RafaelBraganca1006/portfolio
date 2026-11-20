@@ -92,7 +92,7 @@ export default function ScrollReveal() {
         rest.forEach((c) => (c.style.visibility = t.done ? "" : "hidden"));
         if (!open) return;
         const top = t.box.getBoundingClientRect().top;
-        const p = clamp((vh * 0.86 - top) / (vh * 0.4));
+        const p = clamp((vh * 0.97 - top) / (vh * 0.3)); // finishes with the text still in the lower part of the screen
         const n = t.parts.length;
         if (p >= 1) {
           if (!t.done) {
