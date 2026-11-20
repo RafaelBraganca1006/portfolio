@@ -1,6 +1,7 @@
 import Section from "./Section";
 import Pop from "./Pop";
 import CountUp from "./CountUp";
+import LinkPreview from "./LinkPreview";
 import { BmwMark, EthMark, ImgMark, TumMark } from "./InlineMark";
 import { experience } from "@/data/content";
 
@@ -14,17 +15,6 @@ const stats: Record<string, Stat[]> = {
     { value: "60M+", label: "views" },
   ],
 };
-
-const A = ({ href, children }: { href: string; children: React.ReactNode }) => (
-  <a
-    href={href}
-    target="_blank"
-    rel="noopener noreferrer"
-    className="font-medium text-fg underline decoration-fg/30 underline-offset-[6px] transition hover:decoration-fg"
-  >
-    {children}
-  </a>
-);
 
 const B = ({ children }: { children: React.ReactNode }) => (
   <strong className="font-medium text-fg">{children}</strong>
@@ -68,7 +58,7 @@ const sentences: Record<string, React.ReactNode> = {
         exchange semester at <span className="whitespace-nowrap"><TumMark />&nbsp;TUM</span>
       </Pop>
       ,{" "}
-      <A href="https://www.tum.de/en/news-and-events/all-news/press-releases/details/tum-once-again-named-the-best-university-in-the-eu">the best university in the European Union</A>.
+      <LinkPreview href="https://www.tum.de/en/news-and-events/all-news/press-releases/details/tum-once-again-named-the-best-university-in-the-eu" image="/previews/tum.png" host="tum.de" alt="TUM press release: TUM once again named the best university in the EU">the best university in the European Union</LinkPreview>.
     </>
   ),
   "exp-eth": (
@@ -78,7 +68,7 @@ const sentences: Record<string, React.ReactNode> = {
         computer science studies at <span className="whitespace-nowrap"><EthMark />&nbsp;ETH</span> Zurich
       </Pop>
       , home to one of the{" "}
-      <A href="https://www.timeshighereducation.com/world-university-rankings/2026/subject-ranking/computer-science">top 3 CS departments in the world</A>.
+      <LinkPreview href="https://www.timeshighereducation.com/world-university-rankings/2026/subject-ranking/computer-science" image="/previews/the.png" host="timeshighereducation.com" alt="Times Higher Education Computer Science World University Rankings 2026">top 3 CS departments in the world</LinkPreview>.
     </>
   ),
   "exp-ethbc": (
